@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import ShowList from "./components/ShowList";
 import PodcastList from "./components/PodcastList.jsx";
+import "./App.css";
 function App() {
   const [podcasts, setPodcasts] = useState([]); // To hold the podcast data
   const [loading, setLoading] = useState(true); // To handle loading state
