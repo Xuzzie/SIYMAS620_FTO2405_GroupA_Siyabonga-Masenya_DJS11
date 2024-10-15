@@ -2,27 +2,50 @@ import React from "react";
 import EpisodeList from "./EpisodeList.jsx";
 
 function SeasonList({ showId, seasons }) {
+  const [selectedSeason, setSelectedSeason] = useState(null);
+  const [episodes, setEpisodes] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  const handleSeasonSelect = (season) => {
+    setSelectedSeason(season);
+    setLoading(true);
+    setError(null);
+
+    // Fetch episodes for the selected season
+    fetch(
+      `https://podcast-api.netlify.app/shows/${showId}/seasons/${season.id}/episodes`
+    ) // Replace with actual API endpoint
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        setEpisodes(data);
+        setLoading(false);
+      })
+      .catch((error) => {
+        setError(error);
+        setLoading(false);
+      });
+  };
+
   return (
     <div>
-      <h3>Seasons for Show ID: {showId}</h3>
-      {seasons.length === 0 ? (
-        <p>No seasons available for this show.</p>
-      ) : (
-        <ul>
-          {seasons.map((season) => (
-            <li key={season.id}>
-              <strong>{season.title}</strong>
-              {season.episodes && season.episodes.length > 0 && (
-                <ul>
-                  {season.episodes.map((episode) => (
-                    <li key={episode.id}>{episode.title}</li>
-                  ))}
-                </ul>
-              )}
-            </li>
-          ))}
-        </ul>
-      )}
+      <h3>Seasons</h3>
+      <ul>
+        {seasons.map((season) => (
+          <li key={season.id} onClick={() => handleSeasonSelect(season)}>
+            {season.title} (Episodes: {season.episodeCount})
+          </li>
+        ))}
+      </ul>
+
+      {loading && <p>Loading episodes...</p>}
+      {error && <p>Error: {error.message}</p>}
+      {selectedSeason && <EpisodeList episodes={episodes} />}
     </div>
   );
 }
