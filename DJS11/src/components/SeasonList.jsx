@@ -1,4 +1,5 @@
 import React from "react";
+import EpisodeList from "./EpisodeList.jsx";
 
 function SeasonList({ showId, seasons }) {
   return (
