@@ -10,7 +10,7 @@ function ShowList() {
 
   useEffect(() => {
     // Fetch data when the component mounts
-    fetch("https://podcast-api.netlify.app") // this is the API in which we will fetch data from
+    fetch("https://podcast-api.netlify.app") // This is the API to fetch data from
       .then((response) => {
         if (!response.ok) {
           throw new Error("Network response was not ok");
@@ -27,6 +27,23 @@ function ShowList() {
       });
   }, []);
 
+  const handleShowSelect = (show) => {
+    setSelectedShow(show);
+    fetch(`https://podcast-api.netlify.app/shows/${show.id}/seasons`) // Replace with actual API endpoint
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        setSeasons(data);
+      })
+      .catch((error) => {
+        setError(error);
+      });
+  };
+
   if (loading) {
     return <p>Loading...</p>;
   }
@@ -40,23 +57,14 @@ function ShowList() {
       <h2>Podcast Shows</h2>
       <ul>
         {shows.map((show) => (
-          <li key={show.id}>
-            {/* Display show image, title, number of seasons, and last updated date */}
-            {show.imageUrl && <img src={show.imageUrl} alt={show.title} />}
-            <strong>{show.title}</strong>
-            {show.numberOfSeasons !== undefined && (
-              <span> - {show.numberOfSeasons} seasons</span>
-            )}
-            {show.lastUpdated && (
-              <span>
-                {" "}
-                - Last updated:{" "}
-                {new Date(show.lastUpdated).toLocaleDateString()}
-              </span>
-            )}
+          <li key={show.id} onClick={() => handleShowSelect(show)}>
+            {show.title}
           </li>
         ))}
       </ul>
+      {selectedShow && (
+        <SeasonList showId={selectedShow.id} seasons={seasons} />
+      )}
     </div>
   );
 }
