@@ -6,10 +6,15 @@ body {
   margin: 0;
   padding: 0;
   line-height: 1.6;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
 }
 
 /* Container for the entire app */
 .container {
+  width: 100%;
   max-width: 900px;
   margin: 20px auto;
   padding: 20px;
@@ -29,6 +34,7 @@ h2 {
 ul {
   list-style: none;
   padding: 0;
+  margin: 0;
 }
 
 li {
@@ -68,10 +74,9 @@ p {
 input[type="text"] {
   padding: 10px;
   width: 100%;
-  max-width: 100%;
   border: 1px solid #ccc;
   border-radius: 5px;
-  margin-bottom: 20px;
+  margin: 10px 0 20px;
   font-size: 16px;
 }
 
