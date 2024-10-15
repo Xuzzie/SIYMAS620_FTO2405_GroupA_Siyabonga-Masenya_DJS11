@@ -1,7 +1,6 @@
 import React from "react";
 
 import EpisodeList from "./EpisodeList"; // Import your EpisodeList component
-
 function SeasonList({ showId, seasons }) {
   const [selectedSeason, setSelectedSeason] = useState(null);
 

@@ -13,7 +13,10 @@ function App() {
     // Fetch previews when the component mounts
     fetch("https://podcast-api.netlify.app")
       .then((response) => response.json())
-      .then((data) => setShows(data))
+      .then((data) => {
+        console.log("Fetched Shows Data:", data); // Log fetched shows data
+        setShows(data);
+      })
       .catch((error) => console.error("Error fetching shows:", error));
   }, []);
 

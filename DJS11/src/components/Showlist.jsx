@@ -16,18 +16,21 @@ function ShowList({ shows, onShowSelect }) {
   return (
     <div>
       <h2>Podcast Shows</h2>
-      <ul>
-        {shows.map((show) => (
-          <li key={show.id} onClick={() => onShowSelect(show)}>
-            <h3>{show.title}</h3>
-            <img src={show.image} alt={show.title} />
-            <p>{show.description}</p>
-            <p>Genres: {show.genreIds.map((id) => genres[id]).join(", ")}</p>
-          </li>
-        ))}
-      </ul>
+      {shows.length === 0 ? (
+        <p>No shows available</p>
+      ) : (
+        <ul>
+          {shows.map((show) => (
+            <li key={show.id} onClick={() => onShowSelect(show)}>
+              <h3>{show.title}</h3>
+              <img src={show.image} alt={show.title} />
+              <p>{show.description}</p>
+              <p>Genres: {show.genreIds.map((id) => genres[id]).join(", ")}</p>
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   );
 }
-
 export default ShowList;
