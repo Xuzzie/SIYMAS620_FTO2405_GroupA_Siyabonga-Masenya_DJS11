@@ -4,6 +4,10 @@ import EpisodeList from "./EpisodeList"; // Import your EpisodeList component
 function SeasonList({ showId, seasons }) {
   const [selectedSeason, setSelectedSeason] = useState(null);
 
+  if (!Array.isArray(seasons)) {
+    return <p>No seasons available</p>; // Handle if seasons is not an array
+  }
+
   return (
     <div>
       <h2>Seasons</h2>

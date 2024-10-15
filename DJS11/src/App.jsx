@@ -12,22 +12,39 @@ function App() {
   useEffect(() => {
     // Fetch previews when the component mounts
     fetch("https://podcast-api.netlify.app")
-      .then((response) => response.json())
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return response.json();
+      })
       .then((data) => {
         console.log("Fetched Shows Data:", data); // Log fetched shows data
         setShows(data);
       })
-      .catch((error) => console.error("Error fetching shows:", error));
+      .catch((error) => {
+        console.error("Error fetching shows:", error);
+        // Optionally set an error state here to display an error message in the UI
+      });
   }, []);
 
   const handleShowSelect = (show) => {
     // Fetch detailed show data using the selected show's ID
     fetch(`https://podcast-api.netlify.app/id/${show.id}`)
-      .then((response) => response.json())
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return response.json();
+      })
       .then((data) => {
+        console.log("Fetched Show Details:", data); // Log fetched show details
         setSelectedShow(data); // Set the selected show with its seasons and episodes
       })
-      .catch((error) => console.error("Error fetching show details:", error));
+      .catch((error) => {
+        console.error("Error fetching show details:", error);
+        // Optionally set an error state here to display an error message in the UI
+      });
   };
 
   const handleBackToShows = () => {
