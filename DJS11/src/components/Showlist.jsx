@@ -37,7 +37,21 @@ function ShowList() {
       <h2>Podcast Shows</h2>
       <ul>
         {shows.map((show) => (
-          <li key={show.id}>{show.title}</li>
+          <li key={show.id}>
+            {/* Display show image, title, number of seasons, and last updated date */}
+            {show.imageUrl && <img src={show.imageUrl} alt={show.title} />}
+            <strong>{show.title}</strong>
+            {show.numberOfSeasons !== undefined && (
+              <span> - {show.numberOfSeasons} seasons</span>
+            )}
+            {show.lastUpdated && (
+              <span>
+                {" "}
+                - Last updated:{" "}
+                {new Date(show.lastUpdated).toLocaleDateString()}
+              </span>
+            )}
+          </li>
         ))}
       </ul>
     </div>
