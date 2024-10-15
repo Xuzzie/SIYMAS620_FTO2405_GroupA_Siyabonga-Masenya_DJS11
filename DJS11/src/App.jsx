@@ -7,10 +7,10 @@ import "./App.css";
 function App() {
   const [shows, setShows] = useState([]);
   const [selectedShow, setSelectedShow] = useState(null);
-  const [searchTerm, setSearchTerm] = useState("");
+  const [seasons, setSeasons] = useState([]);
 
   useEffect(() => {
-    // Fetch shows when the component mounts
+    // Fetch shows from the API
     fetch("https://podcast-api.netlify.app")
       .then((response) => response.json())
       .then((data) => setShows(data))
@@ -19,40 +19,20 @@ function App() {
 
   const handleShowSelect = (show) => {
     setSelectedShow(show);
+    setSeasons(show.seasons); // Assuming the API returns seasons with shows
   };
 
-  const handleBackToShows = () => {
-    setSelectedShow(null);
+  const handleSeasonSelect = (season) => {
+    // Handle what happens when a season is selected
+    console.log("Selected season:", season);
+    // Here, you can implement the logic to fetch episodes for the selected season
   };
-
-  // Filter shows based on the search term
-  const filteredShows = shows.filter((show) =>
-    show.title.toLowerCase().includes(searchTerm.toLowerCase())
-  );
 
   return (
     <div>
-      <h1>Podcast App</h1>
-      <input
-        type="text"
-        placeholder="Search for a show..."
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
-        style={{
-          margin: "10px 0",
-          padding: "10px",
-          width: "100%",
-          borderRadius: "5px",
-          border: "1px solid #ccc",
-        }}
-      />
-      {selectedShow ? (
-        <SeasonList showId={selectedShow.id} seasons={selectedShow.seasons} />
-      ) : (
-        <ShowList shows={filteredShows} onShowSelect={handleShowSelect} />
-      )}
+      <ShowList shows={shows} onShowSelect={handleShowSelect} />
       {selectedShow && (
-        <button onClick={handleBackToShows}>Back to Shows</button>
+        <SeasonList seasons={seasons} onSeasonSelect={handleSeasonSelect} />
       )}
     </div>
   );
