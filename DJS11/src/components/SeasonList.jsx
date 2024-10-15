@@ -1,5 +1,5 @@
-import React from "react";
-import EpisodeList from "./EpisodeList.jsx";
+import React, { useEffect, useState } from "react";
+import EpisodeList from "./EpisodeList"; // Import the EpisodeList component
 
 function SeasonList({ showId, seasons }) {
   const [selectedSeason, setSelectedSeason] = useState(null);
