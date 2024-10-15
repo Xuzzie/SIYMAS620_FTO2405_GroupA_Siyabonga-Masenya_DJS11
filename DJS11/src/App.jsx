@@ -83,5 +83,6 @@ function App() {
     </div>
   );
 }
+console.log("Filtered Shows:", filteredShows); // Log shows before passing to ShowList
 
 export default App;
