@@ -1,13 +1,13 @@
 import React from "react";
 
-function EpisodeList({ episodes }) {
+function EpisodeList({ seasonId, episodes }) {
   return (
     <div>
-      <h4>Episodes</h4>
+      <h3>Episodes for Season {seasonId}</h3>
       <ul>
         {episodes.map((episode) => (
           <li key={episode.id}>
-            <strong>{episode.title}</strong> - {episode.description}
+            {episode.title} - {episode.description}
           </li>
         ))}
       </ul>

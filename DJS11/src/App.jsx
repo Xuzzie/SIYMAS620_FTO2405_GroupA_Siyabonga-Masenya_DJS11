@@ -10,24 +10,25 @@ function App() {
   const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
-    // Fetch shows when the component mounts
+    // Fetch previews when the component mounts
     fetch("https://podcast-api.netlify.app")
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-        return response.json();
-      })
+      .then((response) => response.json())
       .then((data) => setShows(data))
       .catch((error) => console.error("Error fetching shows:", error));
   }, []);
 
   const handleShowSelect = (show) => {
-    setSelectedShow(show);
+    // Fetch detailed show data using the selected show's ID
+    fetch(`https://podcast-api.netlify.app/id/${show.id}`)
+      .then((response) => response.json())
+      .then((data) => {
+        setSelectedShow(data); // Set the selected show with its seasons and episodes
+      })
+      .catch((error) => console.error("Error fetching show details:", error));
   };
 
   const handleBackToShows = () => {
-    setSelectedShow(null);
+    setSelectedShow(null); // Reset the selected show to return to the show list
   };
 
   // Filter shows based on the search term

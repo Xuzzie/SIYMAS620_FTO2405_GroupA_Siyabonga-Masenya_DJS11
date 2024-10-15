@@ -1,19 +1,25 @@
 import React from "react";
 
-function SeasonList({ seasons, onSeasonSelect }) {
+import EpisodeList from "./EpisodeList"; // Import your EpisodeList component
+
+function SeasonList({ showId, seasons }) {
+  const [selectedSeason, setSelectedSeason] = useState(null);
+
   return (
     <div>
-      <h3>Seasons</h3>
-      {seasons.length === 0 ? (
-        <p>No seasons available for this show.</p>
-      ) : (
-        <ul>
-          {seasons.map((season) => (
-            <li key={season.id} onClick={() => onSeasonSelect(season)}>
-              {season.title} (Episodes: {season.episodeCount})
-            </li>
-          ))}
-        </ul>
+      <h2>Seasons</h2>
+      <ul>
+        {seasons.map((season) => (
+          <li key={season.id} onClick={() => setSelectedSeason(season)}>
+            {season.title}
+          </li>
+        ))}
+      </ul>
+      {selectedSeason && (
+        <EpisodeList
+          seasonId={selectedSeason.id}
+          episodes={selectedSeason.episodes}
+        />
       )}
     </div>
   );
