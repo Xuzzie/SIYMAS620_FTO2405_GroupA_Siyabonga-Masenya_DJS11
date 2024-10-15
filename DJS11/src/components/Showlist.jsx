@@ -1,3 +1,4 @@
+// ShowList.jsx
 import React from "react";
 
 const genres = {
@@ -13,9 +14,9 @@ const genres = {
 };
 
 function ShowList({ shows, onShowSelect }) {
-  // Check if shows is an array
+  // Handle cases where `shows` is not an array or is empty
   if (!Array.isArray(shows) || shows.length === 0) {
-    return <p>No shows available.</p>; // Render a message if no shows
+    return <p>No shows available at the moment. Please try again later.</p>;
   }
 
   return (

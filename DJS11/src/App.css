@@ -1,28 +1,92 @@
+/* General styling for the body */
 body {
   font-family: Arial, sans-serif;
   background-color: #f0f0f0;
+  color: #333;
   margin: 0;
-  padding: 20px;
+  padding: 0;
+  line-height: 1.6;
 }
 
-h1 {
+/* Container for the entire app */
+.container {
+  max-width: 900px;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Heading styles */
+h1,
+h2 {
+  text-align: center;
   color: #333;
 }
 
+/* Styles for the show list */
 ul {
-  list-style-type: none;
+  list-style: none;
   padding: 0;
 }
 
 li {
-  padding: 10px;
-  background-color: #fff;
-  margin: 5px 0;
-  cursor: pointer;
-  border-radius: 4px;
-  transition: background-color 0.3s;
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+  border-bottom: 1px solid #ccc;
+  padding: 15px 0;
 }
 
 li:hover {
-  background-color: #f2f2f2;
+  background-color: #f9f9f9;
+  cursor: pointer;
+}
+
+/* Styles for images */
+img {
+  width: 150px;
+  height: auto;
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+/* Styles for show titles and descriptions */
+h3 {
+  margin: 0 0 10px;
+  font-size: 18px;
+}
+
+p {
+  margin: 0;
+  font-size: 14px;
+  color: #666;
+}
+
+/* Style for the search input */
+input[type="text"] {
+  padding: 10px;
+  width: 100%;
+  max-width: 100%;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-bottom: 20px;
+  font-size: 16px;
+}
+
+/* Back button styling */
+button {
+  padding: 10px 15px;
+  font-size: 14px;
+  color: white;
+  background-color: #007bff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 20px;
+}
+
+button:hover {
+  background-color: #0056b3;
 }

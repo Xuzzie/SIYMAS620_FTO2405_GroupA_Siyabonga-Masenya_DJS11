@@ -1,11 +1,11 @@
 import React from "react";
 
-import EpisodeList from "./EpisodeList"; // Import your EpisodeList component
 function SeasonList({ showId, seasons }) {
   const [selectedSeason, setSelectedSeason] = useState(null);
 
-  if (!Array.isArray(seasons)) {
-    return <p>No seasons available</p>; // Handle if seasons is not an array
+  // Handle cases where `seasons` is empty or not defined
+  if (!seasons || seasons.length === 0) {
+    return <p>No seasons available for this show.</p>;
   }
 
   return (

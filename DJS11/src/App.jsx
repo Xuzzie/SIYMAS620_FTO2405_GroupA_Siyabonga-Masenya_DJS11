@@ -3,52 +3,40 @@ import ShowList from "./components/ShowList";
 //import PodcastList from "./components/PodcastList.jsx";
 import SeasonList from "./components/SeasonList.jsx";
 import "./App.css";
-
 function App() {
   const [shows, setShows] = useState([]);
   const [selectedShow, setSelectedShow] = useState(null);
+  const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
     // Fetch previews when the component mounts
     fetch("https://podcast-api.netlify.app")
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-        return response.json();
-      })
+      .then((response) => response.json())
       .then((data) => {
-        console.log("Fetched Shows Data:", data); // Log fetched shows data
+        console.log("Fetched Shows:", data); // Log fetched data
         setShows(data);
+        setLoading(false); // Set loading to false once data is fetched
       })
       .catch((error) => {
         console.error("Error fetching shows:", error);
-        // Optionally set an error state here to display an error message in the UI
+        setLoading(false); // Set loading to false in case of error
       });
   }, []);
 
   const handleShowSelect = (show) => {
     // Fetch detailed show data using the selected show's ID
     fetch(`https://podcast-api.netlify.app/id/${show.id}`)
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-        return response.json();
-      })
+      .then((response) => response.json())
       .then((data) => {
-        console.log("Fetched Show Details:", data); // Log fetched show details
-        setSelectedShow(data); // Set the selected show with its seasons and episodes
+        console.log("Selected Show Details:", data); // Log the selected show data
+        setSelectedShow(data);
       })
-      .catch((error) => {
-        console.error("Error fetching show details:", error);
-        // Optionally set an error state here to display an error message in the UI
-      });
+      .catch((error) => console.error("Error fetching show details:", error));
   };
 
   const handleBackToShows = () => {
-    setSelectedShow(null); // Reset the selected show to return to the show list
+    setSelectedShow(null);
   };
 
   // Filter shows based on the search term
@@ -56,8 +44,13 @@ function App() {
     show.title.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  // Display loading message if data is being fetched
+  if (loading) {
+    return <p>Loading...</p>;
+  }
+
   return (
-    <div>
+    <div className="container">
       <h1>Podcast App</h1>
       <input
         type="text"
@@ -83,6 +76,5 @@ function App() {
     </div>
   );
 }
-console.log("Filtered Shows:", filteredShows); // Log shows before passing to ShowList
 
 export default App;
