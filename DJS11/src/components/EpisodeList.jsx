@@ -1,13 +1,15 @@
 import React from "react";
 
-function EpisodeList({ seasonId, episodes }) {
+function EpisodeList({ season, onBack }) {
   return (
     <div>
-      <h3>Episodes for Season {seasonId}</h3>
+      <button onClick={onBack}>Back to Seasons</button>
+      <h3>Episodes for {season.title}</h3>
       <ul>
-        {episodes.map((episode) => (
+        {season.episodes.map((episode) => (
           <li key={episode.id}>
-            {episode.title} - {episode.description}
+            <h4>{episode.title}</h4>
+            <p>{episode.description}</p>
           </li>
         ))}
       </ul>
