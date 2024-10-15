@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from "react";
+import SeasonList from "./SeasonList";
 
 function ShowList() {
   const [shows, setShows] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [selectedShow, setSelectedShow] = useState(null);
+  const [seasons, setSeasons] = useState([]);
 
   useEffect(() => {
     // Fetch data when the component mounts
