@@ -1,16 +1,15 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 
 const PodcastPlayer = ({ episode, onClose }) => {
-  // If no episode is selected, don't render the player
-  if (!episode) {
-    return null;
-  }
+  const audioRef = useRef(null); // Use ref to access the audio element
 
+  // Effect to reset and play audio when a new episode is selected
   useEffect(() => {
-    // Auto-play the audio when a new episode is selected
-    const audio = document.getElementById("audio-player");
-    if (audio) {
-      audio.play();
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current.currentTime = 0; // Reset audio to the start
+      audioRef.current.load(); // Reload audio
+      audioRef.current.play(); // Start playing the new episode
     }
   }, [episode]);
 
@@ -35,7 +34,13 @@ const PodcastPlayer = ({ episode, onClose }) => {
         <p>{episode.title}</p>
       </div>
 
-      <audio id="audio-player" controls autoPlay style={{ width: "300px" }}>
+      <audio
+        controls
+        autoPlay
+        key={episode.id} // Add key to force React to treat it as a new element
+        ref={audioRef} // Set the reference for controlling the audio
+        style={{ width: "300px" }}
+      >
         <source src={episode.file} type="audio/mpeg" />
         Your browser does not support the audio element.
       </audio>

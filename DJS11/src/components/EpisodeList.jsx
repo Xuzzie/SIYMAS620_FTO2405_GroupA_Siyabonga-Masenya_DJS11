@@ -1,14 +1,8 @@
 import React from "react";
-import "./EpisodeList.css"; // Assuming this file contains necessary styles
 
-const EpisodeList = ({
-  season,
-  onEpisodeSelect,
-  onFavoriteToggle,
-  favorites,
-}) => {
+const EpisodeList = ({ season, onEpisodeSelect }) => {
   return (
-    <div className="season-container">
+    <div>
       <h2>{season.title}</h2>
       <ul>
         {season.episodes.map((episode) => (
@@ -17,14 +11,6 @@ const EpisodeList = ({
               <h3>{episode.title}</h3>
               <p>{episode.description}</p>
             </div>
-            <i
-              className={`heart-icon ${
-                favorites.some((fav) => fav.id === episode.id) ? "red" : ""
-              }`}
-              onClick={() => onFavoriteToggle(episode)}
-            >
-              ♥
-            </i>
             <button onClick={() => onEpisodeSelect(episode)}>Play</button>
           </li>
         ))}
