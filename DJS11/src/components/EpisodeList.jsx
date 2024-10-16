@@ -1,5 +1,6 @@
+//working code
+
 import React from "react";
-import "./EpisodeList.css";
 
 const EpisodeList = ({
   season,
@@ -34,32 +35,3 @@ const EpisodeList = ({
 };
 
 export default EpisodeList;
-
-// Sample Usage
-// Assuming season is an object with a title and episodes array, e.g., { title: "Season 1", episodes: [{ id: 1, title: "Episode 1", description: "Description 1" }, { id: 2, title: "Episode 2", description: "Description 2" }, ...] }
-// <EpisodeList season={season} onEpisodeSelect={handleEpisodeSelect} onFavoriteToggle={handleFavoriteToggle} favorites={favorites} />
-
-/* EpisodeList.css file
-.episode-item {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 10px;
-  border-bottom: 1px solid #ccc;
-}
-
-.heart-icon {
-  font-size: 24px;
-  color: black;
-  cursor: pointer;
-  transition: color 0.3s ease;
-}
-
-.heart-icon.red {
-  color: red;
-}
-
-.heart-icon:hover {
-  transform: scale(1.2);
-}
-*/
