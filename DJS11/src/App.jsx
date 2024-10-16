@@ -13,7 +13,6 @@ function App() {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedGenre, setSelectedGenre] = useState(null);
 
-  // Fetch show previews and genre data
   useEffect(() => {
     const fetchShowsAndGenres = async () => {
       try {
@@ -75,7 +74,7 @@ function App() {
         const genre = genres.find((g) => g.id === selectedGenre);
         return genre?.shows?.includes(show.id.toString());
       }
-      return true;
+      return true; // If no genre is selected, show all shows
     });
 
   return (

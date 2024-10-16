@@ -17,6 +17,19 @@ function GenreNav({ genres, onGenreSelect, selectedGenre }) {
           padding: "0",
         }}
       >
+        <li
+          style={{
+            padding: "10px",
+            border: "1px solid #ccc",
+            borderRadius: "5px",
+            backgroundColor: selectedGenre === null ? "#d4d4d4" : "#e6e6e6",
+            fontWeight: selectedGenre === null ? "bold" : "normal",
+            textDecoration: selectedGenre === null ? "underline" : "none",
+          }}
+          onClick={() => onGenreSelect(null)}
+        >
+          All Genres
+        </li>
         {genres.map((genre) => (
           <li
             key={genre.id}

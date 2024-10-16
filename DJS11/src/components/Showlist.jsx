@@ -22,14 +22,19 @@ function ShowList({ shows, genres, onShowSelect }) {
               <p>No image available</p>
             )}
             <p>{show.description}</p>
-            <p>
-              Genres:{" "}
-              {show.genreIds && show.genreIds.length > 0
-                ? show.genreIds
-                    .map((id) => genres[id] || "Unknown Genre")
-                    .join(", ")
-                : "No genres available"}
-            </p>
+            {/* Render Genres only if genreIds are available and matched */}
+            {show.genreIds && show.genreIds.length > 0 && (
+              <p>
+                Genres:{" "}
+                {show.genreIds
+                  .map((id) => {
+                    const genre = genres.find((genre) => genre.id === id);
+                    return genre ? genre.title : null;
+                  })
+                  .filter((title) => title) // Remove any null values
+                  .join(", ")}
+              </p>
+            )}
           </li>
         ))}
       </ul>
