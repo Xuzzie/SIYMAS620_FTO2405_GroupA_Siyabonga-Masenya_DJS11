@@ -44,7 +44,8 @@ function GenreNav({ genres, onGenreSelect, selectedGenre }) {
             }}
             onClick={() => onGenreSelect(genre.id)}
           >
-            {genre.title}
+            {genre.name ? genre.name : genre.title}{" "}
+            {/* Ensure correct property */}
           </li>
         ))}
       </ul>

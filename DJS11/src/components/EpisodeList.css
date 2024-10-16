@@ -1,0 +1,23 @@
+.episode-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
+}
+
+/* EpisodeList.css */
+.heart-icon {
+  font-size: 24px;
+  color: black; /* Default color for non-favorited episodes */
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.heart-icon.red {
+  color: red; /* Color for favorited episodes */
+}
+
+.heart-icon:hover {
+  transform: scale(1.2);
+}
