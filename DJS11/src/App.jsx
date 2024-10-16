@@ -1,10 +1,9 @@
-//this is working ver
 import React, { useEffect, useState } from "react";
 import ShowList from "./components/Showlist";
 import SeasonList from "./components/SeasonList";
 import EpisodeList from "./components/EpisodeList";
 import GenreNav from "./components/GenreNav";
-import PodcastPlayer from "./components/PodcastPlayer";
+import PodcastPlayer from "./components/PodcastPlayer"; // Ensure this is the simplified PodcastPlayer
 import "./App.css";
 
 function App() {
@@ -21,29 +20,19 @@ function App() {
   useEffect(() => {
     const fetchShowsAndGenres = async () => {
       try {
-        console.log("Fetching shows and genres...");
         const showResponse = await fetch("https://podcast-api.netlify.app");
         if (!showResponse.ok) {
           throw new Error(`Failed to fetch shows: ${showResponse.statusText}`);
         }
         const showData = await showResponse.json();
-        console.log("Fetched shows:", showData);
         setShows(showData);
 
         const genrePromises = Array.from({ length: 9 }, (_, i) =>
-          fetch(`https://podcast-api.netlify.app/genre/${i + 1}`).then(
-            (res) => {
-              if (!res.ok) {
-                throw new Error(
-                  `Failed to fetch genre with ID ${i + 1}: ${res.statusText}`
-                );
-              }
-              return res.json();
-            }
+          fetch(`https://podcast-api.netlify.app/genre/${i + 1}`).then((res) =>
+            res.json()
           )
         );
         const genreData = await Promise.all(genrePromises);
-        console.log("Fetched genres:", genreData);
         setGenres(genreData);
 
         const savedFavorites =
@@ -59,82 +48,52 @@ function App() {
 
   // Handle show selection
   const handleShowSelect = (show) => {
-    console.log("Selected show:", show);
     fetch(`https://podcast-api.netlify.app/id/${show.id}`)
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(
-            `Failed to fetch show details: ${response.statusText}`
-          );
-        }
-        return response.json();
-      })
-      .then((data) => {
-        console.log("Fetched show details:", data);
-        setSelectedShow(data);
-      })
+      .then((response) => response.json())
+      .then((data) => setSelectedShow(data))
       .catch((error) => console.error("Error fetching show details:", error));
   };
 
   // Handle season selection
-  const handleSeasonSelect = (season) => {
-    console.log("Selected season:", season);
-    setSelectedSeason(season);
-  };
+  const handleSeasonSelect = (season) => setSelectedSeason(season);
 
   // Handle episode selection (activates the player without changing the page)
   const handleEpisodeSelect = (episode) => {
-    console.log("Selected episode:", episode);
-    setSelectedEpisode(episode); // Set the selected episode to update the player
+    // Set selected episode and add dummy audio
+    setSelectedEpisode({
+      ...episode,
+      file: "https://podcast-api.netlify.app/placeholder-audio.mp3", // Dummy audio file
+    });
   };
 
   // Handle toggling episode favorites
   const handleFavoriteToggle = (episode) => {
-    console.log("Toggling favorite:", episode);
-    // Check if the episode is already in favorites
     const isFavorite = favorites.some((fav) => fav.id === episode.id);
-
-    if (isFavorite) {
-      // If it's already a favorite, remove it
-      const updatedFavorites = favorites.filter((fav) => fav.id !== episode.id);
-      setFavorites(updatedFavorites);
-      localStorage.setItem("favorites", JSON.stringify(updatedFavorites));
-    } else {
-      // If it's not a favorite, add it
-      const updatedFavorites = [...favorites, episode]; // Add the selected episode
-      setFavorites(updatedFavorites);
-      localStorage.setItem("favorites", JSON.stringify(updatedFavorites));
-    }
+    const updatedFavorites = isFavorite
+      ? favorites.filter((fav) => fav.id !== episode.id)
+      : [...favorites, episode];
+    setFavorites(updatedFavorites);
+    localStorage.setItem("favorites", JSON.stringify(updatedFavorites));
   };
 
   // Handle going back to show list from season view
   const handleBackToShows = () => {
-    console.log("Back to shows");
     setSelectedShow(null);
     setSelectedSeason(null);
   };
 
   // Handle going back to season list from episode view
-  const handleBackToSeasons = () => {
-    console.log("Back to seasons");
-    setSelectedSeason(null);
-  };
+  const handleBackToSeasons = () => setSelectedSeason(null);
 
   // Handle genre selection from GenreNav component
   const handleGenreSelect = (genreId) => {
-    console.log("Selected genre:", genreId);
     setSelectedGenre(genreId);
-
-    // Reset selected show and season to go back to show list
     setSelectedShow(null);
     setSelectedSeason(null);
   };
 
   // Close the podcast player
-  const handleClosePlayer = () => {
-    console.log("Closing podcast player");
-    setSelectedEpisode(null);
-  };
+  const handleClosePlayer = () => setSelectedEpisode(null);
 
   // Filter shows based on the selected genre and search term
   const filteredShows = shows
@@ -143,7 +102,7 @@ function App() {
     )
     .filter((show) => {
       if (selectedGenre === "favorite-episodes") {
-        return favorites.some((fav) => fav.id === show.id); // Match episodes based on ID
+        return favorites.some((fav) => fav.id === show.id);
       }
       if (selectedGenre) {
         const genre = genres.find((g) => g.id === selectedGenre);
@@ -165,12 +124,11 @@ function App() {
         genres={[
           ...genres,
           { id: "favorite-episodes", name: "Favorite Episodes" },
-        ]} // Add Favorite Episodes genre
+        ]}
         onGenreSelect={handleGenreSelect}
         selectedGenre={selectedGenre}
       />
 
-      {/* Render Season List if a show is selected but no season is selected */}
       {selectedShow && !selectedSeason && (
         <SeasonList
           show={selectedShow}
@@ -179,25 +137,22 @@ function App() {
         />
       )}
 
-      {/* Render Episode List if a season is selected */}
       {selectedSeason && (
         <EpisodeList
           season={selectedSeason}
           onEpisodeSelect={handleEpisodeSelect}
-          onFavoriteToggle={handleFavoriteToggle} // Ensure this is passed correctly
+          onFavoriteToggle={handleFavoriteToggle}
           favorites={favorites}
           onBack={handleBackToSeasons}
         />
       )}
 
-      {/* Render Show List if no show or season is selected */}
       {!selectedShow &&
         !selectedSeason &&
         selectedGenre !== "favorite-episodes" && (
           <ShowList shows={filteredShows} onShowSelect={handleShowSelect} />
         )}
 
-      {/* Render Favorite Episodes if "Favorite Episodes" genre is selected */}
       {selectedGenre === "favorite-episodes" && favorites.length > 0 && (
         <div>
           <h2>Favorite Episodes</h2>
@@ -217,7 +172,7 @@ function App() {
         </div>
       )}
 
-      {/* Persistent Podcast Player at the bottom of the page */}
+      {/* Display the PodcastPlayer when an episode is selected */}
       {selectedEpisode && (
         <PodcastPlayer episode={selectedEpisode} onClose={handleClosePlayer} />
       )}

@@ -1,6 +1,5 @@
-//working code
-
 import React from "react";
+import "./EpisodeList.css"; // Assuming this file contains necessary styles
 
 const EpisodeList = ({
   season,
@@ -9,7 +8,7 @@ const EpisodeList = ({
   favorites,
 }) => {
   return (
-    <div>
+    <div className="season-container">
       <h2>{season.title}</h2>
       <ul>
         {season.episodes.map((episode) => (
