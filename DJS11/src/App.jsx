@@ -84,7 +84,7 @@ function App() {
     setSelectedSeason(season);
   };
 
-  // Handle episode selection
+  // Handle episode selection (this will activate the player without changing the page)
   const handleEpisodeSelect = (episode) => {
     console.log("Selected episode:", episode);
     setSelectedEpisode(episode); // Set the selected episode to update the player
@@ -163,8 +163,8 @@ function App() {
         />
       )}
 
-      {/* Render Episode List if a season is selected but no episode is selected */}
-      {selectedSeason && !selectedEpisode && (
+      {/* Render Episode List if a season is selected */}
+      {selectedSeason && (
         <EpisodeList
           season={selectedSeason}
           onEpisodeSelect={handleEpisodeSelect}
@@ -199,7 +199,7 @@ function App() {
         </div>
       )}
 
-      {/* Persistent Podcast Player */}
+      {/* Persistent Podcast Player at the bottom of the page */}
       {selectedEpisode && (
         <PodcastPlayer episode={selectedEpisode} onClose={handleClosePlayer} />
       )}
