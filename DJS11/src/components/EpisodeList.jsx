@@ -1,24 +1,32 @@
 import React from "react";
 
-function EpisodeList({ season, onBack }) {
-  if (!season || !season.episodes || season.episodes.length === 0) {
-    return (
-      <div>
-        <button onClick={onBack}>Back to Seasons</button>
-        <h3>{season?.title}</h3>
-        <p>No episodes available for this season.</p>
-      </div>
-    );
+function EpisodeList({
+  season,
+  onEpisodeSelect,
+  onFavoriteToggle,
+  favorites,
+  onBack,
+}) {
+  if (!season) {
+    return <p>No season selected.</p>;
   }
+
+  console.log("Rendering EpisodeList for season:", season);
 
   return (
     <div>
+      <h2>Episodes of {season.title}</h2>
       <button onClick={onBack}>Back to Seasons</button>
-      <h3>{season.title} - Episodes</h3>
       <ul>
         {season.episodes.map((episode) => (
           <li key={episode.id}>
-            <p>{episode.title}</p>
+            <h3>{episode.title}</h3>
+            <button onClick={() => onEpisodeSelect(episode)}>Play</button>
+            <button onClick={() => onFavoriteToggle(episode)}>
+              {favorites.some((fav) => fav.id === episode.id)
+                ? "Unfavorite"
+                : "Favorite"}
+            </button>
           </li>
         ))}
       </ul>
