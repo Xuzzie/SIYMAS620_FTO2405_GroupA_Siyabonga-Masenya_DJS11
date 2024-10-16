@@ -90,12 +90,20 @@ function App() {
   // Handle toggling episode favorites
   const handleFavoriteToggle = (episode) => {
     console.log("Toggling favorite:", episode);
-    const updatedFavorites = favorites.some((fav) => fav.id === episode.id)
-      ? favorites.filter((fav) => fav.id !== episode.id)
-      : [...favorites, episode];
+    // Check if the episode is already in favorites
+    const isFavorite = favorites.some((fav) => fav.id === episode.id);
 
-    setFavorites(updatedFavorites);
-    localStorage.setItem("favorites", JSON.stringify(updatedFavorites));
+    if (isFavorite) {
+      // If it's already a favorite, remove it
+      const updatedFavorites = favorites.filter((fav) => fav.id !== episode.id);
+      setFavorites(updatedFavorites);
+      localStorage.setItem("favorites", JSON.stringify(updatedFavorites));
+    } else {
+      // If it's not a favorite, add it
+      const updatedFavorites = [...favorites, episode]; // Add the selected episode
+      setFavorites(updatedFavorites);
+      localStorage.setItem("favorites", JSON.stringify(updatedFavorites));
+    }
   };
 
   // Handle going back to show list from season view
@@ -134,7 +142,7 @@ function App() {
     )
     .filter((show) => {
       if (selectedGenre === "favorite-episodes") {
-        return favorites.some((fav) => fav.showId === show.id);
+        return favorites.some((fav) => fav.id === show.id); // Match episodes based on ID
       }
       if (selectedGenre) {
         const genre = genres.find((g) => g.id === selectedGenre);
@@ -175,7 +183,7 @@ function App() {
         <EpisodeList
           season={selectedSeason}
           onEpisodeSelect={handleEpisodeSelect}
-          onFavoriteToggle={handleFavoriteToggle}
+          onFavoriteToggle={handleFavoriteToggle} // Ensure this is passed correctly
           favorites={favorites}
           onBack={handleBackToSeasons}
         />
