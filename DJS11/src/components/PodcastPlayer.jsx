@@ -1,6 +1,6 @@
 import React from "react";
 
-function PodcastPlayer({ episode }) {
+function PodcastPlayer({ episode, onClose }) {
   if (!episode) return null;
 
   console.log("Playing episode:", episode);
@@ -12,6 +12,7 @@ function PodcastPlayer({ episode }) {
         <button>Play</button>
         <button>Pause</button>
         <input type="range" min="0" max="100" />
+        <button onClick={onClose}>Close Player</button>
       </div>
     </div>
   );
