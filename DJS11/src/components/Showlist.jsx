@@ -1,20 +1,7 @@
 import React from "react";
 
-const genres = {
-  1: "Personal Growth",
-  2: "Investigative Journalism",
-  3: "History",
-  4: "Comedy",
-  5: "Entertainment",
-  6: "Business",
-  7: "Fiction",
-  8: "News",
-  9: "Kids and Family",
-};
-
-function ShowList({ shows, onShowSelect }) {
-  // Handle cases where `shows` is not an array or is empty
-  if (!Array.isArray(shows) || shows.length === 0) {
+function ShowList({ shows, genres, onShowSelect }) {
+  if (!shows.length) {
     return <p>No shows available at the moment. Please try again later.</p>;
   }
 
@@ -29,12 +16,7 @@ function ShowList({ shows, onShowSelect }) {
               <img
                 src={show.image}
                 alt={show.title}
-                style={{
-                  width: "150px",
-                  height: "150px",
-                  objectFit: "cover",
-                  borderRadius: "8px",
-                }}
+                style={{ width: "200px" }}
               />
             ) : (
               <p>No image available</p>

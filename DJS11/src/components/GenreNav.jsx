@@ -1,53 +1,40 @@
-// GenreNav.jsx
 import React from "react";
 
-const genres = {
-  1: "Personal Growth",
-  2: "Investigative Journalism",
-  3: "History",
-  4: "Comedy",
-  5: "Entertainment",
-  6: "Business",
-  7: "Fiction",
-  8: "News",
-  9: "Kids and Family",
-};
+function GenreNav({ genres, onGenreSelect, selectedGenre }) {
+  if (!genres.length) {
+    return <p>Loading genres...</p>;
+  }
 
-function GenreNav({ onGenreSelect, selectedGenre }) {
   return (
-    <nav style={{ display: "flex", justifyContent: "center", padding: "10px" }}>
-      {Object.entries(genres).map(([id, name]) => (
-        <button
-          key={id}
-          onClick={() => onGenreSelect(parseInt(id, 10))}
-          style={{
-            margin: "5px",
-            padding: "10px 15px",
-            borderRadius: "5px",
-            backgroundColor:
-              selectedGenre === parseInt(id, 10) ? "#007bff" : "#f8f9fa",
-            color: selectedGenre === parseInt(id, 10) ? "#fff" : "#000",
-            border: "1px solid #ccc",
-            cursor: "pointer",
-          }}
-        >
-          {name}
-        </button>
-      ))}
-      <button
-        onClick={() => onGenreSelect(null)}
+    <nav>
+      <h2>Genres</h2>
+      <ul
         style={{
-          margin: "5px",
-          padding: "10px 15px",
-          borderRadius: "5px",
-          backgroundColor: selectedGenre === null ? "#007bff" : "#f8f9fa",
-          color: selectedGenre === null ? "#fff" : "#000",
-          border: "1px solid #ccc",
+          display: "flex",
+          gap: "10px",
           cursor: "pointer",
+          listStyle: "none",
+          padding: "0",
         }}
       >
-        All Genres
-      </button>
+        {genres.map((genre) => (
+          <li
+            key={genre.id}
+            style={{
+              padding: "10px",
+              border: "1px solid #ccc",
+              borderRadius: "5px",
+              backgroundColor:
+                selectedGenre === genre.id ? "#d4d4d4" : "#e6e6e6",
+              fontWeight: selectedGenre === genre.id ? "bold" : "normal",
+              textDecoration: selectedGenre === genre.id ? "underline" : "none",
+            }}
+            onClick={() => onGenreSelect(genre.id)}
+          >
+            {genre.title}
+          </li>
+        ))}
+      </ul>
     </nav>
   );
 }

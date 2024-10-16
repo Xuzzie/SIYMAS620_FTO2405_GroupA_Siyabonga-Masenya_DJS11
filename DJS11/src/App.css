@@ -95,3 +95,31 @@ button {
 button:hover {
   background-color: #0056b3;
 }
+
+/* Added styles for genre navigation */
+nav {
+  margin: 20px 0;
+  text-align: center;
+}
+
+nav ul {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+}
+
+nav ul li {
+  padding: 10px 15px;
+  background-color: #e6e6e6;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+nav ul li:hover {
+  background-color: #d4d4d4;
+}
+
+nav ul li.active {
+  font-weight: bold;
+  text-decoration: underline;
+}

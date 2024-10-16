@@ -1,33 +1,29 @@
-import React, { useState } from "react";
-import EpisodeList from "./EpisodeList";
+import React from "react";
 
-function SeasonList({ show, onBack }) {
-  const [selectedSeason, setSelectedSeason] = useState(null);
-
-  const handleSeasonSelect = (season) => {
-    setSelectedSeason(season);
-  };
+function SeasonList({ show, onSeasonSelect, onBack }) {
+  if (!show || !show.seasons || show.seasons.length === 0) {
+    return (
+      <div>
+        <button onClick={onBack}>Back to Shows</button>
+        <h2>{show?.title}</h2>
+        <p>No seasons available for this show.</p>
+      </div>
+    );
+  }
 
   return (
     <div>
       <button onClick={onBack}>Back to Shows</button>
-      <h2>{show.title} - Seasons</h2>
-      {!selectedSeason ? (
-        <ul>
-          {show.seasons.map((season) => (
-            <li key={season.id} onClick={() => handleSeasonSelect(season)}>
-              {season.title}
-            </li>
-          ))}
-        </ul>
-      ) : (
-        <>
-          <EpisodeList
-            season={selectedSeason}
-            onBack={() => setSelectedSeason(null)}
-          />
-        </>
-      )}
+      <h2>{show.title}</h2>
+      <img src={show.image} alt={show.title} style={{ width: "200px" }} />
+      <h3>Seasons</h3>
+      <ul>
+        {show.seasons.map((season) => (
+          <li key={season.id} onClick={() => onSeasonSelect(season)}>
+            {season.title}
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }
