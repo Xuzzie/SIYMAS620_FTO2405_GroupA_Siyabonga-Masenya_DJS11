@@ -1,4 +1,3 @@
-// ShowList.jsx
 import React from "react";
 
 const genres = {
@@ -27,15 +26,26 @@ function ShowList({ shows, onShowSelect }) {
           <li key={show.id} onClick={() => onShowSelect(show)}>
             <h3>{show.title}</h3>
             {show.image ? (
-              <img src={show.image} alt={show.title} />
+              <img
+                src={show.image}
+                alt={show.title}
+                style={{
+                  width: "150px",
+                  height: "150px",
+                  objectFit: "cover",
+                  borderRadius: "8px",
+                }}
+              />
             ) : (
               <p>No image available</p>
             )}
             <p>{show.description}</p>
             <p>
               Genres:{" "}
-              {show.genreIds
-                ? show.genreIds.map((id) => genres[id]).join(", ")
+              {show.genreIds && show.genreIds.length > 0
+                ? show.genreIds
+                    .map((id) => genres[id] || "Unknown Genre")
+                    .join(", ")
                 : "No genres available"}
             </p>
           </li>

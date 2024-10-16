@@ -3,10 +3,12 @@ import ShowList from "./components/ShowList";
 //import PodcastList from "./components/PodcastList.jsx";
 import SeasonList from "./components/SeasonList.jsx";
 import "./App.css";
+import GenreNav from "./components/GenreNav.jsx";
 function App() {
   const [shows, setShows] = useState([]);
   const [selectedShow, setSelectedShow] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
+  const [selectedGenre, setSelectedGenre] = useState(null);
 
   useEffect(() => {
     // Fetch previews when the component mounts
@@ -31,13 +33,21 @@ function App() {
   };
 
   // Filter shows based on the search term
-  const filteredShows = shows.filter((show) =>
-    show.title.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filteredShows = shows
+    .filter((show) =>
+      show.title.toLowerCase().includes(searchTerm.toLowerCase())
+    )
+    .filter((show) =>
+      selectedGenre ? show.genreIds.includes(selectedGenre) : true
+    );
 
   return (
-    <div className="container">
+    <div>
       <h1>Podcast App</h1>
+      <GenreNav
+        onGenreSelect={setSelectedGenre}
+        selectedGenre={selectedGenre}
+      />
       <input
         type="text"
         placeholder="Search for a show..."
@@ -53,7 +63,8 @@ function App() {
       />
       {selectedShow ? (
         <>
-          <SeasonList show={selectedShow} onBack={handleBackToShows} />
+          <SeasonList showId={selectedShow.id} seasons={selectedShow.seasons} />
+          <button onClick={handleBackToShows}>Back to Shows</button>
         </>
       ) : (
         <ShowList shows={filteredShows} onShowSelect={handleShowSelect} />
