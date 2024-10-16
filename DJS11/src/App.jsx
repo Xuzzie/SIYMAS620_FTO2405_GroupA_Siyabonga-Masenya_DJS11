@@ -141,8 +141,6 @@ function App() {
         <EpisodeList
           season={selectedSeason}
           onEpisodeSelect={handleEpisodeSelect}
-          onFavoriteToggle={handleFavoriteToggle}
-          favorites={favorites}
           onBack={handleBackToSeasons}
         />
       )}
@@ -174,7 +172,12 @@ function App() {
 
       {/* Display the PodcastPlayer when an episode is selected */}
       {selectedEpisode && (
-        <PodcastPlayer episode={selectedEpisode} onClose={handleClosePlayer} />
+        <PodcastPlayer
+          episode={selectedEpisode}
+          onClose={handleClosePlayer}
+          onFavoriteToggle={handleFavoriteToggle}
+          favorites={favorites} // Pass the current favorites list
+        />
       )}
     </div>
   );
