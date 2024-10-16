@@ -20,14 +20,12 @@ function App() {
   useEffect(() => {
     const fetchShowsAndGenres = async () => {
       try {
-        console.log("Fetching shows and genres...");
         // Fetch all show previews
         const showResponse = await fetch("https://podcast-api.netlify.app");
         if (!showResponse.ok) {
           throw new Error(`Failed to fetch shows: ${showResponse.statusText}`);
         }
         const showData = await showResponse.json();
-        console.log("Fetched shows:", showData);
         setShows(showData);
 
         // Fetch all genres
@@ -44,7 +42,6 @@ function App() {
           )
         );
         const genreData = await Promise.all(genrePromises);
-        console.log("Fetched genres:", genreData);
         setGenres(genreData);
 
         // Load favorites from localStorage
@@ -61,7 +58,6 @@ function App() {
 
   // Handle show selection
   const handleShowSelect = (show) => {
-    console.log("Selected show:", show);
     fetch(`https://podcast-api.netlify.app/id/${show.id}`)
       .then((response) => {
         if (!response.ok) {
@@ -71,28 +67,22 @@ function App() {
         }
         return response.json();
       })
-      .then((data) => {
-        console.log("Fetched show details:", data);
-        setSelectedShow(data);
-      })
+      .then((data) => setSelectedShow(data))
       .catch((error) => console.error("Error fetching show details:", error));
   };
 
   // Handle season selection
   const handleSeasonSelect = (season) => {
-    console.log("Selected season:", season);
     setSelectedSeason(season);
   };
 
   // Handle episode selection (this will activate the player without changing the page)
   const handleEpisodeSelect = (episode) => {
-    console.log("Selected episode:", episode);
     setSelectedEpisode(episode); // Set the selected episode to update the player
   };
 
   // Handle toggling episode favorites
   const handleFavoriteToggle = (episode) => {
-    console.log("Toggling favorite:", episode);
     const updatedFavorites = favorites.some((fav) => fav.id === episode.id)
       ? favorites.filter((fav) => fav.id !== episode.id)
       : [...favorites, episode];
@@ -103,45 +93,46 @@ function App() {
 
   // Handle going back to show list from season view
   const handleBackToShows = () => {
-    console.log("Back to shows");
     setSelectedShow(null);
     setSelectedSeason(null);
   };
 
   // Handle going back to season list from episode view
   const handleBackToSeasons = () => {
-    console.log("Back to seasons");
     setSelectedSeason(null);
   };
 
   // Handle genre selection from GenreNav component
   const handleGenreSelect = (genreId) => {
-    console.log("Selected genre:", genreId);
     setSelectedGenre(genreId);
   };
 
   // Close the podcast player
   const handleClosePlayer = () => {
-    console.log("Closing podcast player");
     setSelectedEpisode(null);
   };
 
   // Filter shows based on the selected genre and search term
-  const filteredShows = shows
-    .filter((show) =>
-      show.title.toLowerCase().includes(searchTerm.toLowerCase())
-    )
-    .filter((show) => {
-      if (selectedGenre) {
-        const genre = genres.find((g) => g.id === selectedGenre);
-        return genre?.shows?.includes(show.id.toString());
-      }
-      return true;
-    });
+  const filteredShows =
+    selectedGenre === "favorites"
+      ? []
+      : shows
+          .filter((show) =>
+            show.title.toLowerCase().includes(searchTerm.toLowerCase())
+          )
+          .filter((show) => {
+            if (selectedGenre) {
+              const genre = genres.find((g) => g.id === selectedGenre);
+              return genre?.shows?.includes(show.id.toString());
+            }
+            return true;
+          });
 
   return (
     <div className="container">
       <h1>Podcast App</h1>
+
+      {/* Search Bar and Genre Navigation */}
       <input
         type="text"
         placeholder="Search for a show..."
@@ -149,12 +140,17 @@ function App() {
         onChange={(e) => setSearchTerm(e.target.value)}
       />
       <GenreNav
-        genres={genres}
+        genres={[...genres, { id: "favorites", title: "Favorites" }]}
         onGenreSelect={handleGenreSelect}
         selectedGenre={selectedGenre}
       />
 
-      {/* Render Season List if a show is selected but no season is selected */}
+      {/* Render Shows List */}
+      {!selectedShow && !selectedSeason && selectedGenre !== "favorites" && (
+        <ShowList shows={filteredShows} onShowSelect={handleShowSelect} />
+      )}
+
+      {/* Render Season List if a show is selected */}
       {selectedShow && !selectedSeason && (
         <SeasonList
           show={selectedShow}
@@ -174,28 +170,27 @@ function App() {
         />
       )}
 
-      {/* Render Show List if no show or season is selected */}
-      {!selectedShow && !selectedSeason && (
-        <ShowList shows={filteredShows} onShowSelect={handleShowSelect} />
-      )}
-
-      {/* Render Favorite Episodes if there are any */}
-      {favorites.length > 0 && (
+      {/* Render Favorite Episodes if "Favorites" Genre is Selected */}
+      {selectedGenre === "favorites" && (
         <div>
           <h2>Favorite Episodes</h2>
-          <ul>
-            {favorites.map((episode) => (
-              <li key={episode.id}>
-                {episode.title}
-                <button onClick={() => handleEpisodeSelect(episode)}>
-                  Play
-                </button>
-                <button onClick={() => handleFavoriteToggle(episode)}>
-                  Remove from Favorites
-                </button>
-              </li>
-            ))}
-          </ul>
+          {favorites.length > 0 ? (
+            <ul>
+              {favorites.map((episode) => (
+                <li key={episode.id}>
+                  <h3>{episode.title}</h3>
+                  <button onClick={() => handleEpisodeSelect(episode)}>
+                    Play
+                  </button>
+                  <button onClick={() => handleFavoriteToggle(episode)}>
+                    Remove from Favorites
+                  </button>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p>No favorite episodes yet.</p>
+          )}
         </div>
       )}
 

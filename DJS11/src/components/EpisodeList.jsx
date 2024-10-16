@@ -8,14 +8,12 @@ function EpisodeList({
   onBack,
 }) {
   if (!season) {
-    return <p>No season selected.</p>;
+    return null;
   }
-
-  console.log("Rendering EpisodeList for season:", season);
 
   return (
     <div>
-      <h2>Episodes of {season.title}</h2>
+      <h2>{season.title}</h2>
       <button onClick={onBack}>Back to Seasons</button>
       <ul>
         {season.episodes.map((episode) => (
@@ -24,8 +22,8 @@ function EpisodeList({
             <button onClick={() => onEpisodeSelect(episode)}>Play</button>
             <button onClick={() => onFavoriteToggle(episode)}>
               {favorites.some((fav) => fav.id === episode.id)
-                ? "Unfavorite"
-                : "Favorite"}
+                ? "Remove from Favorites"
+                : "Add to Favorites"}
             </button>
           </li>
         ))}
