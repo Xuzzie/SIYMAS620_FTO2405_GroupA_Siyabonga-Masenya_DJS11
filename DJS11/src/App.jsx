@@ -106,20 +106,24 @@ function App() {
     console.log("Back to shows");
     setSelectedShow(null);
     setSelectedSeason(null);
-    setSelectedEpisode(null);
   };
 
   // Handle going back to season list from episode view
   const handleBackToSeasons = () => {
     console.log("Back to seasons");
     setSelectedSeason(null);
-    setSelectedEpisode(null);
   };
 
   // Handle genre selection from GenreNav component
   const handleGenreSelect = (genreId) => {
     console.log("Selected genre:", genreId);
     setSelectedGenre(genreId);
+  };
+
+  // Close the podcast player
+  const handleClosePlayer = () => {
+    console.log("Closing podcast player");
+    setSelectedEpisode(null);
   };
 
   // Filter shows based on the selected genre and search term
@@ -170,9 +174,6 @@ function App() {
         />
       )}
 
-      {/* Render the Podcast Player if an episode is selected */}
-      {selectedEpisode && <PodcastPlayer episode={selectedEpisode} />}
-
       {/* Render Show List if no show or season is selected */}
       {!selectedShow && !selectedSeason && (
         <ShowList shows={filteredShows} onShowSelect={handleShowSelect} />
@@ -196,6 +197,11 @@ function App() {
             ))}
           </ul>
         </div>
+      )}
+
+      {/* Persistent Podcast Player */}
+      {selectedEpisode && (
+        <PodcastPlayer episode={selectedEpisode} onClose={handleClosePlayer} />
       )}
     </div>
   );
