@@ -37,9 +37,12 @@ function App() {
       show.title.toLowerCase().includes(searchTerm.toLowerCase())
     )
     .filter((show) => {
-      // Ensure show.genreIds exists and has values
+      // Ensure show.genreIds exists and is an array
       if (selectedGenre) {
-        return show.genreIds && show.genreIds.includes(selectedGenre);
+        return (
+          Array.isArray(show.genreIds) &&
+          show.genreIds.some((id) => parseInt(id, 10) === selectedGenre)
+        );
       }
       return true; // If no genre is selected, show all
     });
