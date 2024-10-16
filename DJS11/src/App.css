@@ -136,6 +136,7 @@ nav ul li.active {
   align-items: center;
   justify-content: space-between;
   box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.3);
+  z-index: 1000; /* Ensures it is always on top */
 }
 
 .player-controls {
