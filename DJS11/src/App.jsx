@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import ShowList from "./components/ShowList";
-//import PodcastList from "./components/PodcastList.jsx";
-import SeasonList from "./components/SeasonList.jsx";
+import SeasonList from "./components/SeasonList";
+import GenreNav from "./components/GenreNav"; // Import the new GenreNav component
 import "./App.css";
-import GenreNav from "./components/GenreNav.jsx";
+
 function App() {
   const [shows, setShows] = useState([]);
   const [selectedShow, setSelectedShow] = useState(null);
@@ -19,27 +19,30 @@ function App() {
   }, []);
 
   const handleShowSelect = (show) => {
-    // Fetch detailed show data using the selected show's ID
     fetch(`https://podcast-api.netlify.app/id/${show.id}`)
       .then((response) => response.json())
       .then((data) => {
-        setSelectedShow(data); // Set the selected show with its seasons and episodes
+        setSelectedShow(data);
       })
       .catch((error) => console.error("Error fetching show details:", error));
   };
 
   const handleBackToShows = () => {
-    setSelectedShow(null); // Reset the selected show to return to the show list
+    setSelectedShow(null);
   };
 
-  // Filter shows based on the search term
+  // Filter shows based on the search term and selected genre
   const filteredShows = shows
     .filter((show) =>
       show.title.toLowerCase().includes(searchTerm.toLowerCase())
     )
-    .filter((show) =>
-      selectedGenre ? show.genreIds.includes(selectedGenre) : true
-    );
+    .filter((show) => {
+      // Ensure show.genreIds exists and has values
+      if (selectedGenre) {
+        return show.genreIds && show.genreIds.includes(selectedGenre);
+      }
+      return true; // If no genre is selected, show all
+    });
 
   return (
     <div>
