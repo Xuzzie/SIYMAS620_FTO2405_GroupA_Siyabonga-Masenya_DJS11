@@ -29,7 +29,26 @@ const EpisodeList = ({
       <button onClick={onBack} style={{ marginBottom: "20px" }}>
         Back to Seasons
       </button>
+
       <h2>{season.title}</h2>
+
+      {/* Center the season navigation buttons */}
+      <div
+        className="season-navigation"
+        style={{
+          marginBottom: "20px",
+          display: "flex",
+          justifyContent: "center", // Center the buttons horizontally
+          gap: "10px",
+        }}
+      >
+        {seasonIndex > 0 && (
+          <button onClick={handlePreviousSeason}>Previous Season</button>
+        )}
+        {seasonIndex < show.seasons.length - 1 && (
+          <button onClick={handleNextSeason}>Next Season</button>
+        )}
+      </div>
 
       <ul>
         {season.episodes.map((episode) => (
@@ -38,25 +57,10 @@ const EpisodeList = ({
               <h3>{episode.title}</h3>
               <p>{episode.description}</p>
             </div>
-            <i
-              className={`heart-icon ${
-                favorites.some((fav) => fav.id === episode.id) ? "red" : ""
-              }`}
-              onClick={() => onFavoriteToggle(episode)}
-            ></i>
             <button onClick={() => onEpisodeSelect(episode)}>Play</button>
           </li>
         ))}
       </ul>
-
-      <div className="season-navigation">
-        {seasonIndex > 0 && (
-          <button onClick={handlePreviousSeason}>Previous Season</button>
-        )}
-        {seasonIndex < show.seasons.length - 1 && (
-          <button onClick={handleNextSeason}>Next Season</button>
-        )}
-      </div>
     </div>
   );
 };
