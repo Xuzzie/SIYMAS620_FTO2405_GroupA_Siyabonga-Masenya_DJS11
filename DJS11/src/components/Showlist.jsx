@@ -5,11 +5,14 @@ function ShowList({ shows, genres, onShowSelect }) {
     return <p>No shows available at the moment. Please try again later.</p>;
   }
 
+  // Sort the shows alphabetically by title
+  const sortedShows = [...shows].sort((a, b) => a.title.localeCompare(b.title));
+
   return (
     <div>
       <h2>Podcast Shows</h2>
       <div className="show-list">
-        {shows.map((show) => (
+        {sortedShows.map((show) => (
           <div
             key={show.id}
             className="show-item"
