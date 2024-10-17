@@ -113,10 +113,10 @@ function App() {
 
   return (
     <div className="container">
-      <h1>Podcast App</h1>
+      <h1>Orbital Radio</h1>
       <input
         type="text"
-        placeholder="Search for a show..."
+        placeholder="Search On Orbital Radio..."
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
       />
