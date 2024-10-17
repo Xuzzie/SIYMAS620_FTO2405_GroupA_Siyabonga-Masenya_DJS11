@@ -3,6 +3,10 @@ import React, { useState } from "react";
 function ShowList({ shows, genres, onShowSelect }) {
   const [sortOption, setSortOption] = useState("a-z"); // Default sort option
 
+  if (!shows.length) {
+    return <p>No shows available at the moment. Please try again later.</p>;
+  }
+
   // Function to handle sorting logic
   const handleSort = (shows, option) => {
     switch (option) {
@@ -11,13 +15,17 @@ function ShowList({ shows, genres, onShowSelect }) {
       case "z-a":
         return [...shows].sort((a, b) => b.title.localeCompare(a.title));
       case "new-to-old":
-        return [...shows].sort(
-          (a, b) => new Date(b.releaseDate) - new Date(a.releaseDate)
-        );
+        return [...shows].sort((a, b) => {
+          const dateA = new Date(b.releaseDate);
+          const dateB = new Date(a.releaseDate);
+          return isNaN(dateA) || isNaN(dateB) ? 0 : dateA - dateB;
+        });
       case "old-to-new":
-        return [...shows].sort(
-          (a, b) => new Date(a.releaseDate) - new Date(b.releaseDate)
-        );
+        return [...shows].sort((a, b) => {
+          const dateA = new Date(a.releaseDate);
+          const dateB = new Date(b.releaseDate);
+          return isNaN(dateA) || isNaN(dateB) ? 0 : dateA - dateB;
+        });
       default:
         return shows;
     }

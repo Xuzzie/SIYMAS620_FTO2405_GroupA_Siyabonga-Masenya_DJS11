@@ -1,12 +1,18 @@
-// This code works
-
 import React from "react";
-import "./GenreNav.css"; // Create this CSS file for styling
+import "./GenreNav.css";
 
-function GenreNav({ genres, onGenreSelect, selectedGenre }) {
+function GenreNav({ genres, onGenreSelect, selectedGenre, favoriteCount }) {
   if (!genres.length) {
     return <p>Loading genres...</p>;
   }
+
+  // Helper function to get the display name for a genre
+  const getGenreDisplayName = (genre) => {
+    if (genre.id === "favorites") {
+      return `Favorites ${favoriteCount ? `(${favoriteCount})` : ""}`;
+    }
+    return genre.name || genre.title;
+  };
 
   return (
     <nav>
@@ -23,11 +29,13 @@ function GenreNav({ genres, onGenreSelect, selectedGenre }) {
             key={genre.id}
             className={`genre-item ${
               selectedGenre === genre.id ? "active" : ""
-            }`}
+            } ${genre.id === "favorites" ? "favorites-genre" : ""}`}
             onClick={() => onGenreSelect(genre.id)}
           >
-            {genre.name ? genre.name : genre.title}{" "}
-            {/* Ensure correct property */}
+            {getGenreDisplayName(genre)}
+            {genre.id === "favorites" && (
+              <span className="favorite-indicator">❤️</span>
+            )}
           </li>
         ))}
       </ul>

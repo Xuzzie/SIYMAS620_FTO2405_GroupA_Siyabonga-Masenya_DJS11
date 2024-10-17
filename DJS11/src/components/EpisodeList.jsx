@@ -1,24 +1,33 @@
 import React from "react";
-import "./EpisodeList.css"; // Assuming this file contains necessary styles
+import "./EpisodeList.css";
 
 const EpisodeList = ({
-  show, // Pass the entire show object with all seasons
-  seasonIndex, // Pass the current season index
+  show,
+  seasonIndex,
   onEpisodeSelect,
   onBack,
-  onSeasonChange, // Callback to update the current season index
+  onSeasonChange,
+  onFavoriteToggle,
+  favorites,
 }) => {
   const season = show.seasons[seasonIndex];
 
+  // Helper function to check if an episode is favorited
+  const isEpisodeFavorited = (episode) => {
+    return favorites.some(
+      (fav) => fav.id === episode.id && fav.showId === show.id
+    );
+  };
+
   const handleNextSeason = () => {
     if (seasonIndex < show.seasons.length - 1) {
-      onSeasonChange(seasonIndex + 1); // Move to next season
+      onSeasonChange(seasonIndex + 1);
     }
   };
 
   const handlePreviousSeason = () => {
     if (seasonIndex > 0) {
-      onSeasonChange(seasonIndex - 1); // Move to previous season
+      onSeasonChange(seasonIndex - 1);
     }
   };
 
@@ -30,13 +39,12 @@ const EpisodeList = ({
 
       <h2>{season.title}</h2>
 
-      {/* Center the season navigation buttons */}
       <div
         className="season-navigation"
         style={{
           marginBottom: "20px",
           display: "flex",
-          justifyContent: "center", // Center the buttons horizontally
+          justifyContent: "center",
           gap: "10px",
         }}
       >
@@ -48,15 +56,32 @@ const EpisodeList = ({
         )}
       </div>
 
-      <ul>
+      <ul className="episode-list">
         {season.episodes.map((episode) => (
           <li key={episode.id} className="episode-item">
-            <div>
-              <h3>{episode.title}</h3>
+            <div className="episode-content">
+              <div className="episode-header">
+                <h3>{episode.title}</h3>
+                <button
+                  className={`favorite-button ${
+                    isEpisodeFavorited(episode) ? "favorited" : ""
+                  }`}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onFavoriteToggle(episode, show.id, season);
+                  }}
+                >
+                  {isEpisodeFavorited(episode) ? "❤️" : "🤍"}
+                </button>
+              </div>
               <p>{episode.description}</p>
+              <button
+                className="play-button"
+                onClick={() => onEpisodeSelect(episode)}
+              >
+                Play
+              </button>
             </div>
-            <button onClick={() => onEpisodeSelect(episode)}>Play</button>
-            {/* Favorite button has been removed */}
           </li>
         ))}
       </ul>

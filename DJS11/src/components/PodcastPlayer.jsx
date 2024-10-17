@@ -1,13 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
 import "./PodcastPlayer.css";
 
-const PodcastPlayer = ({ episode, onClose, onFavoriteToggle, favorites }) => {
+const PodcastPlayer = ({ episode, onClose }) => {
   const audioRef = useRef(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [showConfirmation, setShowConfirmation] = useState(false);
-
-  // Check if the current episode is in the favorites
-  const isFavorite = favorites.some((fav) => fav.id === episode.id);
 
   // Effect to reset and play audio when a new episode is selected
   useEffect(() => {
@@ -19,11 +16,6 @@ const PodcastPlayer = ({ episode, onClose, onFavoriteToggle, favorites }) => {
       setIsPlaying(true); // Set playing status to true
     }
   }, [episode]);
-
-  // Function to toggle favorite status and update state
-  const handleFavoriteToggle = () => {
-    onFavoriteToggle(episode); // This should add/remove the episode from favorites
-  };
 
   // Function to handle closing the player with a confirmation
   const handleClosePlayer = () => {
@@ -61,14 +53,6 @@ const PodcastPlayer = ({ episode, onClose, onFavoriteToggle, favorites }) => {
       </audio>
 
       <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
-        {/* Favorite Button */}
-        <button
-          className={`favorite-button ${isFavorite ? "favorite" : ""}`}
-          onClick={handleFavoriteToggle}
-        >
-          {isFavorite ? "Unfavorite" : "Favorite"}
-        </button>
-
         <button onClick={handleClosePlayer}>Close Player</button>
       </div>
 

@@ -12,10 +12,11 @@ function App() {
   const [selectedShow, setSelectedShow] = useState(null);
   const [selectedSeason, setSelectedSeason] = useState(null);
   const [selectedEpisode, setSelectedEpisode] = useState(null);
-  const [favorites, setFavorites] = useState([]);
+  const [favoriteEpisodes, setFavoriteEpisodes] = useState([]);
+  const [favoriteShows, setFavoriteShows] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedGenre, setSelectedGenre] = useState(null);
-  const [seasonIndex, setSeasonIndex] = useState(0); // Manage season index here
+  const [seasonIndex, setSeasonIndex] = useState(0);
 
   // Fetch shows and genres when the app loads
   useEffect(() => {
@@ -34,7 +35,7 @@ function App() {
               `https://podcast-api.netlify.app/id/${show.id}`
             );
             const showDetails = await showDetailsResponse.json();
-            return { ...show, seasons: showDetails.seasons || [] }; // Add seasons to each show
+            return { ...show, seasons: showDetails.seasons || [] };
           })
         );
 
@@ -48,9 +49,14 @@ function App() {
         const genreData = await Promise.all(genrePromises);
         setGenres(genreData);
 
-        const savedFavorites =
-          JSON.parse(localStorage.getItem("favorites")) || [];
-        setFavorites(savedFavorites);
+        // Load saved favorites from localStorage
+        const savedFavoriteEpisodes =
+          JSON.parse(localStorage.getItem("favoriteEpisodes")) || [];
+        const savedFavoriteShows =
+          JSON.parse(localStorage.getItem("favoriteShows")) || [];
+
+        setFavoriteEpisodes(savedFavoriteEpisodes);
+        setFavoriteShows(savedFavoriteShows);
       } catch (error) {
         console.error("Error fetching shows or genres:", error);
       }
@@ -62,71 +68,101 @@ function App() {
   // Handle show selection
   const handleShowSelect = (show) => {
     setSelectedShow(show);
-    setSeasonIndex(0); // Reset to first season when a new show is selected
+    setSeasonIndex(0);
   };
 
-  // Handle season selection (initial season select)
+  // Handle season selection
   const handleSeasonSelect = (season) => setSelectedSeason(season);
 
-  // Handle episode selection (activates the player without changing the page)
+  // Handle episode selection
   const handleEpisodeSelect = (episode) => {
     setSelectedEpisode({
       ...episode,
-      file: "https://podcast-api.netlify.app/placeholder-audio.mp3", // Dummy audio file
+      file: "https://podcast-api.netlify.app/placeholder-audio.mp3",
     });
   };
 
-  // Handle toggling episode favorites
-  // Handle adding episode to favorites without toggling off other episodes
-  // Handle toggling episode favorites
-  // Handle toggling episode favorites and store timestamp
-  const handleFavoriteToggle = (episode, showId) => {
-    const isFavorite = favorites.some((fav) => fav.id === episode.id);
+  // Handle favoriting/unfavoriting episodes without affecting other episodes
+  const handleFavoriteEpisodeToggle = (episode, showId, season) => {
+    // Unique key for the episode based on showId and episodeId
+    const uniqueKey = `${showId}-${episode.id}`;
 
-    const updatedFavorites = isFavorite
-      ? favorites.filter((fav) => fav.id !== episode.id) // Remove if already favorited
-      : [
-          ...favorites,
-          { ...episode, showId, favoritedAt: new Date().toISOString() },
-        ]; // Add with timestamp
+    const isFavorite = favoriteEpisodes.some(
+      (fav) => fav.uniqueKey === uniqueKey
+    );
 
-    setFavorites(updatedFavorites);
-    localStorage.setItem("favorites", JSON.stringify(updatedFavorites));
+    let updatedFavorites;
+
+    if (isFavorite) {
+      // Remove from favorites if already exists
+      updatedFavorites = favoriteEpisodes.filter(
+        (fav) => fav.uniqueKey !== uniqueKey
+      );
+    } else {
+      // Add to favorites if doesn't exist
+      const newFavoriteEpisode = {
+        ...episode,
+        showId,
+        season: season,
+        uniqueKey,
+        favoritedAt: new Date().toISOString(),
+      };
+      updatedFavorites = [...favoriteEpisodes, newFavoriteEpisode];
+    }
+
+    // Update state and localStorage
+    setFavoriteEpisodes(updatedFavorites);
+    localStorage.setItem("favoriteEpisodes", JSON.stringify(updatedFavorites));
   };
 
-  // Handle going back to show list from season view
+  // Handle toggling show favorites
+  const handleFavoriteShowToggle = (show) => {
+    const isFavorite = favoriteShows.some((fav) => fav.id === show.id);
+
+    const updatedFavorites = isFavorite
+      ? favoriteShows.filter((fav) => fav.id !== show.id)
+      : [...favoriteShows, { ...show, favoritedAt: new Date().toISOString() }];
+
+    setFavoriteShows(updatedFavorites);
+    localStorage.setItem("favoriteShows", JSON.stringify(updatedFavorites));
+  };
+
   const handleBackToShows = () => {
     setSelectedShow(null);
     setSelectedSeason(null);
   };
 
-  // Handle going back to season list from episode view
   const handleBackToSeasons = () => setSelectedSeason(null);
 
-  // Handle genre selection from GenreNav component
   const handleGenreSelect = (genreId) => {
     setSelectedGenre(genreId);
     setSelectedShow(null);
     setSelectedSeason(null);
   };
 
-  // Close the podcast player
   const handleClosePlayer = () => setSelectedEpisode(null);
 
-  // Handle changing season with next/previous buttons
   const handleSeasonChange = (newIndex) => {
     setSeasonIndex(newIndex);
     setSelectedSeason(selectedShow.seasons[newIndex]);
   };
 
-  // Filter shows based on the selected genre and search term
+  const isEpisodeFavorited = (episode, showId) => {
+    const uniqueKey = `${showId}-${episode.id}`;
+    return favoriteEpisodes.some((fav) => fav.uniqueKey === uniqueKey);
+  };
+
+  // Filter shows based on search and genre
   const filteredShows = shows
     .filter((show) =>
       show.title.toLowerCase().includes(searchTerm.toLowerCase())
     )
     .filter((show) => {
       if (selectedGenre === "favorite-episodes") {
-        return favorites.some((fav) => fav.showId === show.id);
+        return (
+          favoriteEpisodes.some((fav) => fav.showId === show.id) ||
+          favoriteShows.some((fav) => fav.id === show.id)
+        );
       }
       if (selectedGenre) {
         const genre = genres.find((g) => g.id === selectedGenre);
@@ -158,18 +194,29 @@ function App() {
           show={selectedShow}
           onSeasonSelect={handleSeasonSelect}
           onBack={handleBackToShows}
+          onFavoriteToggle={handleFavoriteShowToggle} // Send toggle handler
+          favorites={favoriteShows}
         />
       )}
 
       {selectedSeason && (
         <EpisodeList
-          show={selectedShow} // Pass the full show with all seasons
-          seasonIndex={seasonIndex} // Pass the current season index
-          onSeasonChange={handleSeasonChange} // Pass the season change handler
+          show={selectedShow}
+          seasonIndex={seasonIndex}
+          onSeasonChange={handleSeasonChange}
           onEpisodeSelect={handleEpisodeSelect}
-          onFavoriteToggle={handleFavoriteToggle}
-          favorites={favorites}
+          onFavoriteToggle={(episode) =>
+            handleFavoriteEpisodeToggle(
+              episode,
+              selectedShow.id,
+              selectedSeason
+            )
+          }
+          favorites={favoriteEpisodes}
           onBack={handleBackToSeasons}
+          isEpisodeFavorited={(episode) =>
+            isEpisodeFavorited(episode, selectedShow.id)
+          }
         />
       )}
 
@@ -179,46 +226,83 @@ function App() {
           <ShowList shows={filteredShows} onShowSelect={handleShowSelect} />
         )}
 
-      {selectedGenre === "favorite-episodes" && favorites.length > 0 && (
-        <div>
-          <h2>Favorite Episodes</h2>
-          <ul>
-            {favorites.map((episode) => (
-              <li key={episode.id}>
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                  }}
+      {selectedGenre === "favorite-episodes" &&
+        (favoriteEpisodes.length > 0 || favoriteShows.length > 0) && (
+          <div>
+            <h2>Favorite Episodes</h2>
+            <ul>
+              {favoriteEpisodes.map((episode) => (
+                <li
+                  key={episode.uniqueKey || `${episode.showId}-${episode.id}`}
                 >
-                  <h3 style={{ margin: 0 }}>{episode.title}</h3>
-                  <span className="timestamp">
-                    <strong>Favorited on:</strong>{" "}
-                    {new Date(episode.favoritedAt).toLocaleString()}
-                  </span>
-                </div>
-                <p>{episode.description}</p>
-                <button onClick={() => handleEpisodeSelect(episode)}>
-                  Play
-                </button>
-                <button
-                  onClick={() => handleFavoriteToggle(episode, episode.showId)}
-                >
-                  Unfavorite
-                </button>
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                    }}
+                  >
+                    <h3 style={{ margin: 0 }}>{episode.title}</h3>
+                    <span className="timestamp">
+                      <strong>Favorited on:</strong>{" "}
+                      {new Date(episode.favoritedAt).toLocaleString()}
+                    </span>
+                  </div>
+                  <p>{episode.description}</p>
+                  <button onClick={() => handleEpisodeSelect(episode)}>
+                    Play
+                  </button>
+                  <button
+                    onClick={() =>
+                      handleFavoriteEpisodeToggle(
+                        episode,
+                        episode.showId,
+                        episode.season
+                      )
+                    }
+                  >
+                    Unfavorite
+                  </button>
+                </li>
+              ))}
+              <h2>Favorite Shows</h2>
+              {favoriteShows.map((show) => (
+                <li key={show.id}>
+                  <div>
+                    <img
+                      src={show.image}
+                      alt={show.title}
+                      style={{ width: "100px", marginRight: "10px" }}
+                    />
+                    <h3>{show.title}</h3>
+                    <p>{show.description}</p>
+                    <button onClick={() => handleShowSelect(show)}>
+                      View
+                    </button>{" "}
+                    {/* Updated to use handleShowSelect */}
+                    <button onClick={() => handleFavoriteShowToggle(show)}>
+                      Unfavorite
+                    </button>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
 
       {selectedEpisode && (
         <PodcastPlayer
           episode={selectedEpisode}
           onClose={handleClosePlayer}
-          onFavoriteToggle={handleFavoriteToggle}
-          favorites={favorites} // Pass favorites to PodcastPlayer
+          onFavoriteToggle={(episode) =>
+            handleFavoriteEpisodeToggle(
+              episode,
+              selectedShow?.id || episode.showId,
+              selectedSeason
+            )
+          }
+          favorites={favoriteEpisodes}
+          showId={selectedShow?.id || selectedEpisode.showId}
         />
       )}
     </div>
