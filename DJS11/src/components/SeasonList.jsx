@@ -21,27 +21,43 @@ function SeasonList({
   const isShowFavorited = favorites.some((fav) => fav.id === show.id);
 
   return (
-    <div>
+    <div style={{ textAlign: "center" }}>
+      {" "}
+      {/* Center content */}
       <button onClick={onBack} className="back-button">
         Back to Shows
       </button>
-
       <h2>{show.title}</h2>
-      <img src={show.image} alt={show.title} style={{ width: "200px" }} />
-
-      {/* Favorite show button */}
-      <button
-        className={`favorite-show-button ${isShowFavorited ? "favorited" : ""}`}
-        onClick={() => onFavoriteToggle(show)}
+      {/* Center the image */}
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          flexDirection: "column",
+          alignItems: "center",
+        }}
       >
-        {isShowFavorited ? "Unfavorite Show" : "Favorite Show"}
-      </button>
+        <img
+          src={show.image}
+          alt={show.title}
+          style={{ width: "200px", marginBottom: "10px" }}
+        />
 
+        {/* Favorite show button directly below the image */}
+        <button
+          className={`favorite-show-button ${
+            isShowFavorited ? "favorited" : ""
+          }`}
+          onClick={() => onFavoriteToggle(show)}
+          style={{ marginTop: "10px" }}
+        >
+          {isShowFavorited ? "Unfavorite Show" : "Favorite Show"}
+        </button>
+      </div>
       <h3>Seasons</h3>
       <ul>
         {show.seasons.map((season) => (
           <li key={season.id} onClick={() => onSeasonSelect(season)}>
-            {/* Display the season title with the number of episodes */}
             {season.title} ({season.episodes.length} EP)
           </li>
         ))}
@@ -51,3 +67,5 @@ function SeasonList({
 }
 
 export default SeasonList;
+
+//cemtre
