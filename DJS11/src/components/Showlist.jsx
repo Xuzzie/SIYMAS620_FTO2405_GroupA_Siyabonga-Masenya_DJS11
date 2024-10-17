@@ -1,17 +1,52 @@
-import React from "react";
+import React, { useState } from "react";
 
 function ShowList({ shows, genres, onShowSelect }) {
-  if (!shows.length) {
-    return <p>No shows available at the moment. Please try again later.</p>;
-  }
+  const [sortOption, setSortOption] = useState("a-z"); // Default sort option
 
-  // Sort the shows alphabetically by title
-  const sortedShows = [...shows].sort((a, b) => a.title.localeCompare(b.title));
+  // Function to handle sorting logic
+  const handleSort = (shows, option) => {
+    switch (option) {
+      case "a-z":
+        return [...shows].sort((a, b) => a.title.localeCompare(b.title));
+      case "z-a":
+        return [...shows].sort((a, b) => b.title.localeCompare(a.title));
+      case "new-to-old":
+        return [...shows].sort(
+          (a, b) => new Date(b.releaseDate) - new Date(a.releaseDate)
+        );
+      case "old-to-new":
+        return [...shows].sort(
+          (a, b) => new Date(a.releaseDate) - new Date(b.releaseDate)
+        );
+      default:
+        return shows;
+    }
+  };
+
+  // Get sorted shows based on the selected option
+  const sortedShows = handleSort(shows, sortOption);
 
   return (
     <div>
       <h2>Podcast Shows</h2>
-      <div className="show-list">
+
+      {/* Dropdown for sorting */}
+      <div>
+        <label htmlFor="sort">Sort by:</label>
+        <select
+          id="sort"
+          value={sortOption}
+          onChange={(e) => setSortOption(e.target.value)}
+          style={{ marginLeft: "10px", padding: "5px" }}
+        >
+          <option value="a-z">A-Z</option>
+          <option value="z-a">Z-A</option>
+          <option value="new-to-old">New to Old</option>
+          <option value="old-to-new">Old to New</option>
+        </select>
+      </div>
+
+      <div className="show-list" style={{ marginTop: "20px" }}>
         {sortedShows.map((show) => (
           <div
             key={show.id}
