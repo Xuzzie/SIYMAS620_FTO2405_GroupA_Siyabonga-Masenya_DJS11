@@ -2,12 +2,28 @@ import React from "react";
 import "./EpisodeList.css"; // Assuming this file contains necessary styles
 
 const EpisodeList = ({
-  season,
+  show, // Pass the entire show object with all seasons
+  seasonIndex, // Pass the current season index
   onEpisodeSelect,
   onFavoriteToggle,
   favorites,
   onBack,
+  onSeasonChange, // Callback to update the current season index
 }) => {
+  const season = show.seasons[seasonIndex];
+
+  const handleNextSeason = () => {
+    if (seasonIndex < show.seasons.length - 1) {
+      onSeasonChange(seasonIndex + 1); // Move to next season
+    }
+  };
+
+  const handlePreviousSeason = () => {
+    if (seasonIndex > 0) {
+      onSeasonChange(seasonIndex - 1); // Move to previous season
+    }
+  };
+
   return (
     <div className="season-container">
       <button onClick={onBack} style={{ marginBottom: "20px" }}>
@@ -32,6 +48,15 @@ const EpisodeList = ({
           </li>
         ))}
       </ul>
+
+      <div className="season-navigation">
+        {seasonIndex > 0 && (
+          <button onClick={handlePreviousSeason}>Previous Season</button>
+        )}
+        {seasonIndex < show.seasons.length - 1 && (
+          <button onClick={handleNextSeason}>Next Season</button>
+        )}
+      </div>
     </div>
   );
 };

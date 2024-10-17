@@ -99,6 +99,15 @@ img {
   overflow: hidden; /* In case the title is too long */
 }
 
+.show-seasons {
+  font-family: "Gratina", sans-serif; /* Ensure the font is the same */
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #4e855a;
+  text-align: center;
+  /* Remove extra space above the season subheading */
+}
+
 p {
   margin: 0;
   font-size: 14px;
@@ -294,4 +303,11 @@ nav ul li.active {
 
 .back-button {
   margin-bottom: 20px; /* Adjust as needed */
+}
+
+.show-seasons {
+  font-size: 1rem;
+  color: #666;
+  margin: 5px 0;
+  text-align: center;
 }

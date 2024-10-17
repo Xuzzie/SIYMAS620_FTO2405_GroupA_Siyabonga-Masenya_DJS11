@@ -15,6 +15,7 @@ function App() {
   const [favorites, setFavorites] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedGenre, setSelectedGenre] = useState(null);
+  const [seasonIndex, setSeasonIndex] = useState(0); // Manage season index here
 
   // Fetch shows and genres when the app loads
   useEffect(() => {
@@ -25,7 +26,19 @@ function App() {
           throw new Error(`Failed to fetch shows: ${showResponse.statusText}`);
         }
         const showData = await showResponse.json();
-        setShows(showData);
+
+        // Fetch seasons for each show and update the shows array
+        const updatedShows = await Promise.all(
+          showData.map(async (show) => {
+            const showDetailsResponse = await fetch(
+              `https://podcast-api.netlify.app/id/${show.id}`
+            );
+            const showDetails = await showDetailsResponse.json();
+            return { ...show, seasons: showDetails.seasons || [] }; // Add seasons to each show
+          })
+        );
+
+        setShows(updatedShows);
 
         const genrePromises = Array.from({ length: 9 }, (_, i) =>
           fetch(`https://podcast-api.netlify.app/genre/${i + 1}`).then((res) =>
@@ -48,18 +61,15 @@ function App() {
 
   // Handle show selection
   const handleShowSelect = (show) => {
-    fetch(`https://podcast-api.netlify.app/id/${show.id}`)
-      .then((response) => response.json())
-      .then((data) => setSelectedShow(data))
-      .catch((error) => console.error("Error fetching show details:", error));
+    setSelectedShow(show);
+    setSeasonIndex(0); // Reset to first season when a new show is selected
   };
 
-  // Handle season selection
+  // Handle season selection (initial season select)
   const handleSeasonSelect = (season) => setSelectedSeason(season);
 
   // Handle episode selection (activates the player without changing the page)
   const handleEpisodeSelect = (episode) => {
-    // Set selected episode and add dummy audio
     setSelectedEpisode({
       ...episode,
       file: "https://podcast-api.netlify.app/placeholder-audio.mp3", // Dummy audio file
@@ -94,6 +104,12 @@ function App() {
 
   // Close the podcast player
   const handleClosePlayer = () => setSelectedEpisode(null);
+
+  // Handle changing season with next/previous buttons
+  const handleSeasonChange = (newIndex) => {
+    setSeasonIndex(newIndex);
+    setSelectedSeason(selectedShow.seasons[newIndex]);
+  };
 
   // Filter shows based on the selected genre and search term
   const filteredShows = shows
@@ -139,7 +155,9 @@ function App() {
 
       {selectedSeason && (
         <EpisodeList
-          season={selectedSeason}
+          show={selectedShow} // Pass the full show with all seasons
+          seasonIndex={seasonIndex} // Pass the current season index
+          onSeasonChange={handleSeasonChange} // Pass the season change handler
           onEpisodeSelect={handleEpisodeSelect}
           onFavoriteToggle={handleFavoriteToggle}
           favorites={favorites}

@@ -23,7 +23,8 @@ function SeasonList({ show, onSeasonSelect, onBack }) {
       <ul>
         {show.seasons.map((season) => (
           <li key={season.id} onClick={() => onSeasonSelect(season)}>
-            {season.title}
+            {/* Display the season title with the number of episodes */}
+            {season.title} ({season.episodes.length} EP)
           </li>
         ))}
       </ul>

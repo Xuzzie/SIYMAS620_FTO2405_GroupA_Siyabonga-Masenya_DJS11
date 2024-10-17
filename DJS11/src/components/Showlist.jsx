@@ -19,6 +19,14 @@ function ShowList({ shows, genres, onShowSelect }) {
             onClick={() => onShowSelect(show)}
           >
             <h3 className="show-title">{show.title}</h3>
+
+            {/* Add a subheading for seasons with the same class as the title */}
+            <p className="show-title show-seasons">
+              {show.seasons && show.seasons.length > 0
+                ? `${show.seasons.length} Seasons`
+                : "No Seasons Available"}
+            </p>
+
             {show.image ? (
               <img src={show.image} alt={show.title} className="show-image" />
             ) : (
