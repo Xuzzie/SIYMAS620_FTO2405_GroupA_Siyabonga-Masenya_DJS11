@@ -3,7 +3,7 @@ import ShowList from "./components/Showlist";
 import SeasonList from "./components/SeasonList";
 import EpisodeList from "./components/EpisodeList";
 import GenreNav from "./components/GenreNav";
-import PodcastPlayer from "./components/PodcastPlayer"; // Ensure this is the simplified PodcastPlayer
+import PodcastPlayer from "./components/PodcastPlayer";
 import "./App.css";
 
 function App() {
@@ -102,7 +102,7 @@ function App() {
     )
     .filter((show) => {
       if (selectedGenre === "favorite-episodes") {
-        return favorites.some((fav) => fav.id === show.id);
+        return favorites.some((fav) => fav.showId === show.id);
       }
       if (selectedGenre) {
         const genre = genres.find((g) => g.id === selectedGenre);
@@ -141,6 +141,8 @@ function App() {
         <EpisodeList
           season={selectedSeason}
           onEpisodeSelect={handleEpisodeSelect}
+          onFavoriteToggle={handleFavoriteToggle}
+          favorites={favorites}
           onBack={handleBackToSeasons}
         />
       )}
@@ -170,13 +172,12 @@ function App() {
         </div>
       )}
 
-      {/* Display the PodcastPlayer when an episode is selected */}
       {selectedEpisode && (
         <PodcastPlayer
           episode={selectedEpisode}
           onClose={handleClosePlayer}
           onFavoriteToggle={handleFavoriteToggle}
-          favorites={favorites} // Pass the current favorites list
+          favorites={favorites} // Pass favorites to PodcastPlayer
         />
       )}
     </div>

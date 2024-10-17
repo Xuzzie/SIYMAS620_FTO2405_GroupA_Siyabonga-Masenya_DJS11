@@ -1,0 +1,70 @@
+.podcast-player-bar {
+  position: fixed;
+  bottom: 0;
+  left: 50%; /* Align center horizontally */
+  transform: translateX(-50%); /* Adjust for centering */
+  background-color: #282828;
+  color: #fff;
+  padding: 15px;
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.2);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%; /* Full width to cover the screen */
+  max-width: 1000px; /* Limit width to a maximum size */
+  z-index: 9999;
+}
+
+.podcast-player-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* Space out the items */
+  width: 100%;
+}
+
+.podcast-controls {
+  display: flex;
+  gap: 10px;
+}
+
+.episode-info p {
+  font-size: 16px;
+  margin: 0;
+  padding-right: 20px;
+}
+
+.podcast-audio {
+  width: 300px;
+}
+
+.podcast-controls {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.favorite-button {
+  background-color: #1db954;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+.favorite-button.favorite {
+  background-color: red; /* Change the color for favorited state */
+}
+
+.close-button {
+  background: none;
+  border: 1px solid #fff;
+  color: #fff;
+  padding: 10px 15px;
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+.close-button:hover {
+  background-color: #1db954; /* Add hover effect */
+}
