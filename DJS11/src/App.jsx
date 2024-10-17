@@ -17,6 +17,8 @@ function App() {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedGenre, setSelectedGenre] = useState(null);
   const [seasonIndex, setSeasonIndex] = useState(0);
+  const [episodeSortOption, setEpisodeSortOption] = useState("a-z");
+  const [showSortOption, setShowSortOption] = useState("a-z");
 
   // Fetch shows and genres when the app loads
   useEffect(() => {
@@ -65,6 +67,46 @@ function App() {
     fetchShowsAndGenres();
   }, []);
 
+  // Sort episodes based on the selected sort option
+  const sortFavoriteEpisodes = (episodes) => {
+    switch (episodeSortOption) {
+      case "a-z":
+        return [...episodes].sort((a, b) => a.title.localeCompare(b.title));
+      case "z-a":
+        return [...episodes].sort((a, b) => b.title.localeCompare(a.title));
+      case "newest":
+        return [...episodes].sort(
+          (a, b) => new Date(b.favoritedAt) - new Date(a.favoritedAt)
+        );
+      case "oldest":
+        return [...episodes].sort(
+          (a, b) => new Date(a.favoritedAt) - new Date(b.favoritedAt)
+        );
+      default:
+        return episodes;
+    }
+  };
+
+  // Sort shows based on the selected sort option
+  const sortFavoriteShows = (shows) => {
+    switch (showSortOption) {
+      case "a-z":
+        return [...shows].sort((a, b) => a.title.localeCompare(b.title));
+      case "z-a":
+        return [...shows].sort((a, b) => b.title.localeCompare(a.title));
+      case "newest":
+        return [...shows].sort(
+          (a, b) => new Date(b.favoritedAt) - new Date(a.favoritedAt)
+        );
+      case "oldest":
+        return [...shows].sort(
+          (a, b) => new Date(a.favoritedAt) - new Date(b.favoritedAt)
+        );
+      default:
+        return shows;
+    }
+  };
+
   // Handle show selection
   const handleShowSelect = (show) => {
     setSelectedShow(show);
@@ -82,11 +124,9 @@ function App() {
     });
   };
 
-  // Handle favoriting/unfavoriting episodes without affecting other episodes
+  // Handle favoriting/unfavoriting episodes
   const handleFavoriteEpisodeToggle = (episode, showId, season) => {
-    // Unique key for the episode based on showId and episodeId
     const uniqueKey = `${showId}-${episode.id}`;
-
     const isFavorite = favoriteEpisodes.some(
       (fav) => fav.uniqueKey === uniqueKey
     );
@@ -94,12 +134,10 @@ function App() {
     let updatedFavorites;
 
     if (isFavorite) {
-      // Remove from favorites if already exists
       updatedFavorites = favoriteEpisodes.filter(
         (fav) => fav.uniqueKey !== uniqueKey
       );
     } else {
-      // Add to favorites if doesn't exist
       const newFavoriteEpisode = {
         ...episode,
         showId,
@@ -110,7 +148,6 @@ function App() {
       updatedFavorites = [...favoriteEpisodes, newFavoriteEpisode];
     }
 
-    // Update state and localStorage
     setFavoriteEpisodes(updatedFavorites);
     localStorage.setItem("favoriteEpisodes", JSON.stringify(updatedFavorites));
   };
@@ -194,7 +231,7 @@ function App() {
           show={selectedShow}
           onSeasonSelect={handleSeasonSelect}
           onBack={handleBackToShows}
-          onFavoriteToggle={handleFavoriteShowToggle} // Send toggle handler
+          onFavoriteToggle={handleFavoriteShowToggle}
           favorites={favoriteShows}
         />
       )}
@@ -230,8 +267,22 @@ function App() {
         (favoriteEpisodes.length > 0 || favoriteShows.length > 0) && (
           <div>
             <h2>Favorite Episodes</h2>
+            {/* Episode Sorting Dropdown */}
+            <div>
+              <label htmlFor="episodeSort">Sort by:</label>
+              <select
+                id="episodeSort"
+                value={episodeSortOption}
+                onChange={(e) => setEpisodeSortOption(e.target.value)}
+              >
+                <option value="a-z">A-Z</option>
+                <option value="z-a">Z-A</option>
+                <option value="newest">Newest to Oldest</option>
+                <option value="oldest">Oldest to Newest</option>
+              </select>
+            </div>
             <ul>
-              {favoriteEpisodes.map((episode) => (
+              {sortFavoriteEpisodes(favoriteEpisodes).map((episode) => (
                 <li
                   key={episode.uniqueKey || `${episode.showId}-${episode.id}`}
                 >
@@ -265,8 +316,25 @@ function App() {
                   </button>
                 </li>
               ))}
-              <h2>Favorite Shows</h2>
-              {favoriteShows.map((show) => (
+            </ul>
+
+            <h2>Favorite Shows</h2>
+            {/* Show Sorting Dropdown */}
+            <div>
+              <label htmlFor="showSort">Sort by:</label>
+              <select
+                id="showSort"
+                value={showSortOption}
+                onChange={(e) => setShowSortOption(e.target.value)}
+              >
+                <option value="a-z">A-Z</option>
+                <option value="z-a">Z-A</option>
+                <option value="newest">Newest to Oldest</option>
+                <option value="oldest">Oldest to Newest</option>
+              </select>
+            </div>
+            <ul>
+              {sortFavoriteShows(favoriteShows).map((show) => (
                 <li key={show.id}>
                   <div>
                     <img
@@ -276,10 +344,7 @@ function App() {
                     />
                     <h3>{show.title}</h3>
                     <p>{show.description}</p>
-                    <button onClick={() => handleShowSelect(show)}>
-                      View
-                    </button>{" "}
-                    {/* Updated to use handleShowSelect */}
+                    <button onClick={() => handleShowSelect(show)}>View</button>
                     <button onClick={() => handleFavoriteShowToggle(show)}>
                       Unfavorite
                     </button>
