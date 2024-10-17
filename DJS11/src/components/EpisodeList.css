@@ -61,3 +61,9 @@ ul {
 button {
   margin-bottom: 20px;
 }
+
+.timestamp {
+  font-size: 18px;
+  color: red;
+  margin-left: 20px; /* Add spacing between title and timestamp */
+}

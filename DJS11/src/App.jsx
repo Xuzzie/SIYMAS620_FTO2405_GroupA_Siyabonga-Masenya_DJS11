@@ -79,13 +79,16 @@ function App() {
   // Handle toggling episode favorites
   // Handle adding episode to favorites without toggling off other episodes
   // Handle toggling episode favorites
+  // Handle toggling episode favorites and store timestamp
   const handleFavoriteToggle = (episode, showId) => {
     const isFavorite = favorites.some((fav) => fav.id === episode.id);
 
-    // Toggle the episode's favorite state
     const updatedFavorites = isFavorite
       ? favorites.filter((fav) => fav.id !== episode.id) // Remove if already favorited
-      : [...favorites, { ...episode, showId }]; // Add to favorites if not
+      : [
+          ...favorites,
+          { ...episode, showId, favoritedAt: new Date().toISOString() },
+        ]; // Add with timestamp
 
     setFavorites(updatedFavorites);
     localStorage.setItem("favorites", JSON.stringify(updatedFavorites));
@@ -182,7 +185,19 @@ function App() {
           <ul>
             {favorites.map((episode) => (
               <li key={episode.id}>
-                <h3>{episode.title}</h3>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                  }}
+                >
+                  <h3 style={{ margin: 0 }}>{episode.title}</h3>
+                  <span className="timestamp">
+                    <strong>Favorited on:</strong>{" "}
+                    {new Date(episode.favoritedAt).toLocaleString()}
+                  </span>
+                </div>
                 <p>{episode.description}</p>
                 <button onClick={() => handleEpisodeSelect(episode)}>
                   Play
