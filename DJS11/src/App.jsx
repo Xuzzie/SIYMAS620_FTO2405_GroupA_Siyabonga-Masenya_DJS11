@@ -77,11 +77,15 @@ function App() {
   };
 
   // Handle toggling episode favorites
+  // Handle adding episode to favorites without toggling off other episodes
+  // Handle toggling episode favorites
   const handleFavoriteToggle = (episode, showId) => {
     const isFavorite = favorites.some((fav) => fav.id === episode.id);
+
+    // Toggle the episode's favorite state
     const updatedFavorites = isFavorite
-      ? favorites.filter((fav) => fav.id !== episode.id)
-      : [...favorites, { ...episode, showId }]; // Include showId for reference
+      ? favorites.filter((fav) => fav.id !== episode.id) // Remove if already favorited
+      : [...favorites, { ...episode, showId }]; // Add to favorites if not
 
     setFavorites(updatedFavorites);
     localStorage.setItem("favorites", JSON.stringify(updatedFavorites));
@@ -186,7 +190,7 @@ function App() {
                 <button
                   onClick={() => handleFavoriteToggle(episode, episode.showId)}
                 >
-                  Remove from Favorites
+                  Unfavorite
                 </button>
               </li>
             ))}

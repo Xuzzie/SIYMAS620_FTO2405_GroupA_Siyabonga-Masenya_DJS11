@@ -5,8 +5,6 @@ const EpisodeList = ({
   show, // Pass the entire show object with all seasons
   seasonIndex, // Pass the current season index
   onEpisodeSelect,
-  onFavoriteToggle,
-  favorites,
   onBack,
   onSeasonChange, // Callback to update the current season index
 }) => {
@@ -32,8 +30,16 @@ const EpisodeList = ({
 
       <h2>{season.title}</h2>
 
-      {/* Move the season navigation buttons here, under the season heading */}
-      <div className="season-navigation" style={{ marginBottom: "20px" }}>
+      {/* Center the season navigation buttons */}
+      <div
+        className="season-navigation"
+        style={{
+          marginBottom: "20px",
+          display: "flex",
+          justifyContent: "center", // Center the buttons horizontally
+          gap: "10px",
+        }}
+      >
         {seasonIndex > 0 && (
           <button onClick={handlePreviousSeason}>Previous Season</button>
         )}
@@ -50,6 +56,7 @@ const EpisodeList = ({
               <p>{episode.description}</p>
             </div>
             <button onClick={() => onEpisodeSelect(episode)}>Play</button>
+            {/* Favorite button has been removed */}
           </li>
         ))}
       </ul>

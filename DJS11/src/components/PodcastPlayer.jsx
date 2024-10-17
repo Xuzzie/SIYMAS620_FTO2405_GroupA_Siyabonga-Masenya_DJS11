@@ -1,8 +1,10 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "./PodcastPlayer.css";
 
 const PodcastPlayer = ({ episode, onClose, onFavoriteToggle, favorites }) => {
   const audioRef = useRef(null);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [showConfirmation, setShowConfirmation] = useState(false);
 
   // Check if the current episode is in the favorites
   const isFavorite = favorites.some((fav) => fav.id === episode.id);
@@ -14,12 +16,30 @@ const PodcastPlayer = ({ episode, onClose, onFavoriteToggle, favorites }) => {
       audioRef.current.currentTime = 0; // Reset audio to the start
       audioRef.current.load(); // Reload audio
       audioRef.current.play(); // Start playing the new episode
+      setIsPlaying(true); // Set playing status to true
     }
   }, [episode]);
 
   // Function to toggle favorite status and update state
   const handleFavoriteToggle = () => {
     onFavoriteToggle(episode); // This should add/remove the episode from favorites
+  };
+
+  // Function to handle closing the player with a confirmation
+  const handleClosePlayer = () => {
+    if (isPlaying) {
+      setShowConfirmation(true); // Show confirmation dialog if audio is playing
+    } else {
+      onClose(); // Close immediately if not playing
+    }
+  };
+
+  // Handle confirmation from the user to close the player
+  const confirmClose = (confirmed) => {
+    if (confirmed) {
+      onClose(); // Close the player if user confirms
+    }
+    setShowConfirmation(false); // Hide the confirmation dialog
   };
 
   return (
@@ -33,6 +53,8 @@ const PodcastPlayer = ({ episode, onClose, onFavoriteToggle, favorites }) => {
         autoPlay
         ref={audioRef} // Set the reference for controlling the audio
         style={{ width: "300px" }}
+        onPause={() => setIsPlaying(false)} // Track playing status
+        onPlay={() => setIsPlaying(true)} // Track playing status
       >
         <source src={episode.file} type="audio/mpeg" />
         Your browser does not support the audio element.
@@ -47,8 +69,19 @@ const PodcastPlayer = ({ episode, onClose, onFavoriteToggle, favorites }) => {
           {isFavorite ? "Unfavorite" : "Favorite"}
         </button>
 
-        <button onClick={onClose}>Close Player</button>
+        <button onClick={handleClosePlayer}>Close Player</button>
       </div>
+
+      {/* Confirmation dialog when trying to close while audio is playing */}
+      {showConfirmation && (
+        <div className="confirmation-dialog">
+          <p>
+            Are you sure you want to close the player while audio is playing?
+          </p>
+          <button onClick={() => confirmClose(true)}>Yes</button>
+          <button onClick={() => confirmClose(false)}>No</button>
+        </div>
+      )}
     </div>
   );
 };
