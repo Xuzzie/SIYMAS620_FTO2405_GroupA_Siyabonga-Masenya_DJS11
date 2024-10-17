@@ -32,16 +32,8 @@ const EpisodeList = ({
 
       <h2>{season.title}</h2>
 
-      {/* Center the season navigation buttons */}
-      <div
-        className="season-navigation"
-        style={{
-          marginBottom: "20px",
-          display: "flex",
-          justifyContent: "center", // Center the buttons horizontally
-          gap: "10px",
-        }}
-      >
+      {/* Move the season navigation buttons here, under the season heading */}
+      <div className="season-navigation" style={{ marginBottom: "20px" }}>
         {seasonIndex > 0 && (
           <button onClick={handlePreviousSeason}>Previous Season</button>
         )}

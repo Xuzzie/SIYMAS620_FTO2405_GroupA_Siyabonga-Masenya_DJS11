@@ -77,11 +77,12 @@ function App() {
   };
 
   // Handle toggling episode favorites
-  const handleFavoriteToggle = (episode) => {
+  const handleFavoriteToggle = (episode, showId) => {
     const isFavorite = favorites.some((fav) => fav.id === episode.id);
     const updatedFavorites = isFavorite
       ? favorites.filter((fav) => fav.id !== episode.id)
-      : [...favorites, episode];
+      : [...favorites, { ...episode, showId }]; // Include showId for reference
+
     setFavorites(updatedFavorites);
     localStorage.setItem("favorites", JSON.stringify(updatedFavorites));
   };
@@ -177,11 +178,14 @@ function App() {
           <ul>
             {favorites.map((episode) => (
               <li key={episode.id}>
-                {episode.title}
+                <h3>{episode.title}</h3>
+                <p>{episode.description}</p>
                 <button onClick={() => handleEpisodeSelect(episode)}>
                   Play
                 </button>
-                <button onClick={() => handleFavoriteToggle(episode)}>
+                <button
+                  onClick={() => handleFavoriteToggle(episode, episode.showId)}
+                >
                   Remove from Favorites
                 </button>
               </li>
