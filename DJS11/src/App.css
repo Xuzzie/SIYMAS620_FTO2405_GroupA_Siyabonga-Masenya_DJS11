@@ -1,3 +1,6 @@
+/* this code works 
+
+
 /* General styling for the body */
 body {
   font-family: Arial, sans-serif;
@@ -34,6 +37,7 @@ ul {
   list-style: none;
   padding: 0;
   margin: 0;
+  width: 100%;
 }
 
 li {
@@ -135,7 +139,7 @@ nav ul li.active {
   align-items: center;
   justify-content: space-between;
   box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.3);
-  z-index: 1000; /* Ensures it is always on top */
+  z-index: 1000;
 }
 
 .player-controls {
@@ -172,43 +176,6 @@ nav ul li.active {
 
 .heart-icon:hover {
   transform: scale(1.2);
-}
-
-/* General container for app */
-.container {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 20px;
-  font-family: Arial, sans-serif;
-}
-
-/* Updated styles for top navigation bar */
-.top-nav {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background-color: #007bff;
-  padding: 10px 20px;
-  border-radius: 0 0 8px 8px;
-  z-index: 1000;
-}
-
-.top-nav button {
-  background-color: #ffffff;
-  color: #007bff;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 5px;
-  cursor: pointer;
-  font-weight: bold;
-}
-
-.top-nav button:hover {
-  background-color: #e0e0e0;
 }
 
 /* Adjust padding to accommodate fixed nav bar */
@@ -259,7 +226,7 @@ button:hover {
 }
 
 button {
-  background-color: #1db954; /* Spotify green */
+  background-color: #1db954;
   color: white;
   padding: 10px 20px;
   border: none;
@@ -268,5 +235,5 @@ button {
 }
 
 button:hover {
-  background-color: #14833b; /* Darker green for hover */
+  background-color: #14833b;
 }
