@@ -1,23 +1,63 @@
+/* Container for the season */
+.season-container {
+  padding: 20px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+/* Episode item styling */
 .episode-item {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 10px;
+  flex-direction: column; /* Stack title and description vertically */
+  align-items: center; /* Center the content horizontally */
+  padding: 15px;
   border-bottom: 1px solid #ccc;
+  margin-bottom: 15px;
 }
 
-/* EpisodeList.css */
-.heart-icon {
-  font-size: 24px;
-  color: black; /* Default color for non-favorited episodes */
+/* Center the title */
+.episode-item h3 {
+  margin: 0 0 10px 0; /* Add some space below the title */
+  font-size: 1.5rem; /* Uniform title size */
+  font-weight: bold;
+  color: #333;
+  text-align: center; /* Center the title */
+  width: 100%; /* Ensure the title takes full width */
+}
+
+/* Center the description below the title */
+.episode-item p {
+  margin: 0;
+  font-size: 1rem; /* Uniform description size */
+  color: #666;
+  text-align: center; /* Center the description */
+  max-width: 100%; /* Ensure description does not overflow */
+  line-height: 1.5; /* Increase line height for readability */
+  white-space: normal; /* Allow text to wrap within the container */
+}
+
+/* Button styling */
+button {
+  padding: 10px 15px;
+  font-size: 14px;
+  color: white;
+  background-color: #007bff;
+  border: none;
+  border-radius: 5px;
   cursor: pointer;
-  transition: color 0.3s ease;
 }
 
-.heart-icon.red {
-  color: red; /* Color for favorited episodes */
+button:hover {
+  background-color: #0056b3;
 }
 
-.heart-icon:hover {
-  transform: scale(1.2);
+/* Adjust padding for the episode list */
+ul {
+  padding: 0;
+  list-style: none;
+}
+
+/* Back button */
+button {
+  margin-bottom: 20px;
 }
