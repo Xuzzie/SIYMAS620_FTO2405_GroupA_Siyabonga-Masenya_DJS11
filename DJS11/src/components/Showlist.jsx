@@ -8,36 +8,35 @@ function ShowList({ shows, genres, onShowSelect }) {
   return (
     <div>
       <h2>Podcast Shows</h2>
-      <ul>
+      <div className="show-list">
         {shows.map((show) => (
-          <li key={show.id} onClick={() => onShowSelect(show)}>
-            <h3>{show.title}</h3>
+          <div
+            key={show.id}
+            className="show-item"
+            onClick={() => onShowSelect(show)}
+          >
+            <h3 className="show-title">{show.title}</h3>
             {show.image ? (
-              <img
-                src={show.image}
-                alt={show.title}
-                style={{ width: "200px" }}
-              />
+              <img src={show.image} alt={show.title} className="show-image" />
             ) : (
               <p>No image available</p>
             )}
-            <p>{show.description}</p>
-            {/* Render Genres only if genreIds are available and matched */}
+            <p className="show-description">{show.description}</p>
             {show.genreIds && show.genreIds.length > 0 && (
-              <p>
+              <p className="show-genres">
                 Genres:{" "}
                 {show.genreIds
                   .map((id) => {
                     const genre = genres.find((genre) => genre.id === id);
                     return genre ? genre.title : null;
                   })
-                  .filter((title) => title) // Remove any null values
+                  .filter((title) => title)
                   .join(", ")}
               </p>
             )}
-          </li>
+          </div>
         ))}
-      </ul>
+      </div>
     </div>
   );
 }
