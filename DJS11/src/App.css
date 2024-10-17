@@ -41,6 +41,7 @@ h2 {
   line-height: 1.3; /* Adjust line height */
   text-align: center; /* Center text horizontally */
   margin: 0;
+  margin-bottom: 50px;
 }
 
 /* Center both h1 and h2 vertically and horizontally on the page */
