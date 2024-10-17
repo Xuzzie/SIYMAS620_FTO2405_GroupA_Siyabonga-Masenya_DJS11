@@ -1,4 +1,7 @@
+// This code works
+
 import React from "react";
+import "./GenreNav.css"; // Create this CSS file for styling
 
 function GenreNav({ genres, onGenreSelect, selectedGenre }) {
   if (!genres.length) {
@@ -8,24 +11,9 @@ function GenreNav({ genres, onGenreSelect, selectedGenre }) {
   return (
     <nav>
       <h2>Genres</h2>
-      <ul
-        style={{
-          display: "flex",
-          gap: "10px",
-          cursor: "pointer",
-          listStyle: "none",
-          padding: "0",
-        }}
-      >
+      <ul className="genre-list">
         <li
-          style={{
-            padding: "10px",
-            border: "1px solid #ccc",
-            borderRadius: "5px",
-            backgroundColor: selectedGenre === null ? "#d4d4d4" : "#e6e6e6",
-            fontWeight: selectedGenre === null ? "bold" : "normal",
-            textDecoration: selectedGenre === null ? "underline" : "none",
-          }}
+          className={`genre-item ${selectedGenre === null ? "active" : ""}`}
           onClick={() => onGenreSelect(null)}
         >
           All Genres
@@ -33,15 +21,9 @@ function GenreNav({ genres, onGenreSelect, selectedGenre }) {
         {genres.map((genre) => (
           <li
             key={genre.id}
-            style={{
-              padding: "10px",
-              border: "1px solid #ccc",
-              borderRadius: "5px",
-              backgroundColor:
-                selectedGenre === genre.id ? "#d4d4d4" : "#e6e6e6",
-              fontWeight: selectedGenre === genre.id ? "bold" : "normal",
-              textDecoration: selectedGenre === genre.id ? "underline" : "none",
-            }}
+            className={`genre-item ${
+              selectedGenre === genre.id ? "active" : ""
+            }`}
             onClick={() => onGenreSelect(genre.id)}
           >
             {genre.name ? genre.name : genre.title}{" "}

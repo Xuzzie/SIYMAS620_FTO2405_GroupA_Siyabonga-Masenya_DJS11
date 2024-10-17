@@ -1,0 +1,32 @@
+/* Genre navigation styles */
+.genre-list {
+  display: flex;
+  gap: 10px;
+  list-style: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.genre-item {
+  padding: 10px 15px;
+  border: 2px solid #1db954; /* Spotify green for border */
+  border-radius: 5px;
+  background-color: white; /* White background */
+  font-family: "Narnia", sans-serif; /* Use Narnia font */
+  color: #44813c;
+  font-size: 16px;
+  text-align: center;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.genre-item:hover {
+  background-color: #1db954; /* Spotify green on hover */
+  color: white; /* Change text color on hover */
+}
+
+.genre-item.active {
+  background-color: #1db954; /* Active state: green background */
+  color: white; /* White text */
+  font-weight: bold;
+  text-decoration: underline;
+}

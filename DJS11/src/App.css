@@ -1,8 +1,4 @@
-/* this code works 
-
-
-/* General styling for the body */
-
+/* Load Narnia and Magilio fonts */
 @font-face {
   font-family: "Narnia";
   src: url("./Narnia.otf") format("opentype");
@@ -10,6 +6,14 @@
   font-style: normal;
 }
 
+@font-face {
+  font-family: "Gratina";
+  src: url("./Gratina.otf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+/* General styling for the body */
 body {
   font-family: Arial, sans-serif;
   background-color: #f0f0f0;
@@ -33,7 +37,6 @@ h1 {
   margin: 0;
 }
 
-/* Apply custom font to h2 and center it */
 h2 {
   font-family: "Narnia", sans-serif; /* Fallback to sans-serif */
   color: #333;
@@ -84,9 +87,16 @@ img {
 }
 
 /* Styles for show titles and descriptions */
-h3 {
-  margin: 0 0 10px;
+.show-title {
+  margin: 0;
+  padding: 15px;
+  font-family: "Gratina", sans-serif; /* Use Magilio font for titles */
   font-size: 18px;
+  text-align: center;
+  color: #4e855a;
+  font-weight: bold;
+  height: 50px; /* Fixing height for title to keep consistency */
+  overflow: hidden; /* In case the title is too long */
 }
 
 p {
@@ -200,66 +210,11 @@ nav ul li.active {
   transform: scale(1.2);
 }
 
-/* Adjust padding to accommodate fixed nav bar */
 .container {
   padding-top: 70px;
 }
 
-/* Other existing styling */
-input[type="text"] {
-  margin: 10px 0;
-  padding: 10px;
-  width: 100%;
-  border-radius: 5px;
-  border: 1px solid #ccc;
-}
-
-.episode-item {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 10px;
-  border-bottom: 1px solid #ccc;
-}
-
-.heart-icon {
-  margin-left: 10px;
-  transition: color 0.3s ease;
-  cursor: pointer;
-  font-size: 1.5em;
-}
-
-.heart-icon:hover {
-  transform: scale(1.2);
-}
-
-button {
-  cursor: pointer;
-  padding: 8px 15px;
-  margin-top: 10px;
-  background-color: #007bff;
-  color: #ffffff;
-  border: none;
-  border-radius: 5px;
-}
-
-button:hover {
-  background-color: #0056b3;
-}
-
-button {
-  background-color: #1db954;
-  color: white;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-button:hover {
-  background-color: #14833b;
-}
-/* Container for the show list */
+/* Show list styling */
 .show-list {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -270,7 +225,6 @@ button:hover {
   margin: 0 auto;
 }
 
-/* Individual show item */
 .show-item {
   position: relative;
   overflow: hidden;
@@ -279,7 +233,7 @@ button:hover {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease;
   cursor: pointer;
-  height: 350px; /* Ensure all items have the same height */
+  height: 350px;
 }
 
 .show-item:hover {
@@ -289,24 +243,12 @@ button:hover {
 /* Show image */
 .show-image {
   width: 100%;
-  height: 200px; /* Fixed height for uniform image size */
+  height: 200px;
   object-fit: cover;
   border-radius: 8px 8px 0 0;
 }
 
-/* Show title */
-.show-title {
-  margin: 0;
-  padding: 15px;
-  font-size: 18px;
-  text-align: center;
-  color: #333;
-  font-weight: bold;
-  height: 50px; /* Fixing height for title to keep consistency */
-  overflow: hidden; /* In case the title is too long */
-}
-
-/* Show description (hidden by default, scrollable on hover) */
+/* Show description */
 .show-description {
   position: absolute;
   bottom: 0;
@@ -315,7 +257,7 @@ button:hover {
   background-color: rgba(0, 0, 0, 0.7);
   color: #fff;
   padding: 10px;
-  max-height: 100px; /* Set max height to keep it uniform */
+  max-height: 100px;
   opacity: 0;
   transform: translateY(100%);
   transition: opacity 0.3s ease, transform 0.3s ease;
@@ -323,12 +265,11 @@ button:hover {
   overflow: hidden;
 }
 
-/* Make the description scrollable when hovered */
 .show-item:hover .show-description {
   opacity: 1;
   transform: translateY(0);
-  overflow-y: auto; /* Enable vertical scrolling */
-  height: 100px; /* Fixed height for the description box */
+  overflow-y: auto;
+  height: 100px;
 }
 
 .show-description::-webkit-scrollbar {
@@ -336,7 +277,7 @@ button:hover {
 }
 
 .show-description::-webkit-scrollbar-thumb {
-  background-color: rgba(255, 255, 255, 0.3); /* Customize scroll bar */
+  background-color: rgba(255, 255, 255, 0.3);
   border-radius: 4px;
 }
 
@@ -344,10 +285,13 @@ button:hover {
   background-color: rgba(0, 0, 0, 0.2);
 }
 
-/* Genres styling */
 .show-genres {
   text-align: center;
   padding: 10px;
   color: #666;
   font-size: 14px;
+}
+
+.back-button {
+  margin-bottom: 20px; /* Adjust as needed */
 }
