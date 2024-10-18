@@ -358,3 +358,175 @@ nav ul {
   margin: 5px 0;
   text-align: center;
 }
+
+/* Show list container */
+.show-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+  padding: 20px;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Show item styling */
+.show-item {
+  position: relative;
+  overflow: hidden;
+  border-radius: 8px;
+  background-color: #fff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+  cursor: pointer;
+  height: 350px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.show-item:hover {
+  transform: scale(1.05);
+}
+
+/* Show image styling */
+.show-image {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 8px 8px 0 0;
+}
+
+/* Show title styling */
+.show-title {
+  margin: 0;
+  padding: 15px;
+  font-family: "Gratina", sans-serif;
+  font-size: 18px;
+  text-align: center;
+  color: #4e855a;
+  font-weight: bold;
+  height: 50px;
+  overflow: hidden;
+}
+
+/* Show seasons subheading styling */
+.show-seasons {
+  font-family: "Gratina", sans-serif;
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #4e855a;
+  text-align: center;
+}
+
+/* Show description styling */
+.show-description {
+  padding: 10px;
+  font-size: 14px;
+  color: #666;
+  text-align: center;
+}
+
+/* Show genres styling */
+.show-genres {
+  font-size: 12px;
+  text-align: center;
+  color: #888;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1024px) {
+  .show-list {
+    grid-template-columns: repeat(
+      3,
+      1fr
+    ); /* 3 shows per row on medium screens */
+    gap: 15px;
+    padding: 15px;
+  }
+
+  .show-item {
+    height: 330px; /* Slightly reduced height */
+  }
+
+  .show-image {
+    height: 180px; /* Adjust image height to fit better */
+  }
+
+  .show-title {
+    font-size: 16px;
+    padding: 10px;
+  }
+
+  .show-seasons {
+    font-size: 1rem;
+  }
+
+  .show-description {
+    font-size: 13px;
+  }
+
+  .show-genres {
+    font-size: 12px;
+  }
+}
+
+/* For smaller screens - 768px and below */
+@media (max-width: 768px) {
+  .show-list {
+    grid-template-columns: repeat(2, 1fr); /* Adjust to 2 shows per row */
+    gap: 15px;
+    padding: 10px;
+  }
+
+  .show-item {
+    height: 300px; /* Reduced item height */
+  }
+
+  .show-image {
+    height: 160px; /* Adjust image height */
+  }
+
+  .show-title {
+    font-size: 14px;
+    padding: 8px;
+  }
+
+  .show-seasons {
+    font-size: 1rem;
+  }
+
+  .show-description {
+    font-size: 12px;
+  }
+}
+
+/* For mobile screens - 600px and below */
+@media (max-width: 600px) {
+  .show-list {
+    grid-template-columns: repeat(1, 1fr); /* 1 show per row on small screens */
+    gap: 10px;
+    padding: 10px;
+  }
+
+  .show-item {
+    height: 280px; /* Further reduce the height */
+  }
+
+  .show-title {
+    font-size: 12px;
+    padding: 8px;
+  }
+
+  .show-seasons {
+    font-size: 0.9rem;
+  }
+
+  .show-description {
+    font-size: 11px;
+  }
+
+  .show-image {
+    height: 150px; /* Reduced image height for smaller screens */
+  }
+}

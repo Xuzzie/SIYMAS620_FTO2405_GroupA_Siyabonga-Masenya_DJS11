@@ -30,3 +30,42 @@
   font-weight: bold;
   text-decoration: underline;
 }
+
+/* Favorite indicator styles */
+.favorite-indicator {
+  margin-left: 5px;
+  color: red;
+}
+
+/* Dropdown styles for smaller screens */
+.genre-dropdown {
+  width: 100%;
+  max-width: 300px;
+  padding: 10px;
+  font-size: 16px;
+  margin: 10px auto;
+  border: 2px solid #1db954;
+  border-radius: 5px;
+  background-color: white;
+  color: #44813c;
+  font-family: "Narnia", sans-serif;
+}
+
+/* Media query for small and medium screens */
+@media (max-width: 768px) {
+  /* Hide the genre list and show the dropdown */
+  .genre-list {
+    display: none;
+  }
+
+  .genre-dropdown {
+    display: block;
+  }
+}
+
+/* For larger screens, hide the dropdown and display the genre list */
+@media (min-width: 769px) {
+  .genre-dropdown {
+    display: none;
+  }
+}
