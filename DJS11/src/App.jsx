@@ -107,6 +107,14 @@ function App() {
     }
   };
 
+  // Handle clearing favorite episodes and shows
+  const clearFavoriteHistory = () => {
+    setFavoriteEpisodes([]);
+    setFavoriteShows([]);
+    localStorage.removeItem("favoriteEpisodes");
+    localStorage.removeItem("favoriteShows");
+  };
+
   // Handle show selection
   const handleShowSelect = (show) => {
     setSelectedShow(show);
@@ -267,6 +275,9 @@ function App() {
         (favoriteEpisodes.length > 0 || favoriteShows.length > 0) && (
           <div>
             <h2>Favorite Episodes</h2>
+            {/* Clear history button */}
+            <button onClick={clearFavoriteHistory}>Clear History</button>
+
             {/* Episode Sorting Dropdown */}
             <div>
               <label htmlFor="episodeSort">Sort by:</label>
