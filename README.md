@@ -244,9 +244,15 @@ function PodcastPlayer({ episode, onClose }) {
       )}
     </div>
   );
-} ```
+} 
 
 export default PodcastPlayer;
+
+
+```
+
+
+
 
 ## ShowList.jsx
 This component displays a list of available shows. Users can select a show to view its seasons, favorite/unfavorite shows, and sort the list based on various criteria.
@@ -257,8 +263,8 @@ Favorite Toggling: Users can favorite/unfavorite shows.
 Sorting Options: Users can sort shows by title or date.
 
 
-## Example```
-
+## Example
+```
 import React from "react";
 
 function ShowList({ shows, onShowSelect, onFavoriteToggle, favorites }) {
