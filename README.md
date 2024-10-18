@@ -34,7 +34,7 @@ Handling interactions related to selecting shows, seasons, and episodes for play
 
 ## Example off App.jsx 
 
-function App() {
+<function App() {
   const [selectedShow, setSelectedShow] = useState(null);
   const [selectedSeason, setSelectedSeason] = useState(null);
   const [selectedEpisode, setSelectedEpisode] = useState(null);
@@ -68,7 +68,7 @@ function App() {
 }
 
 export default App;
-
+>
 
 
 
