@@ -33,8 +33,8 @@ Handling interactions related to selecting shows, seasons, and episodes for play
 
 
 ## Example off App.jsx 
-
-<function App() {
+```
+function App() {
   const [selectedShow, setSelectedShow] = useState(null);
   const [selectedSeason, setSelectedSeason] = useState(null);
   const [selectedEpisode, setSelectedEpisode] = useState(null);
@@ -68,7 +68,7 @@ Handling interactions related to selecting shows, seasons, and episodes for play
 }
 
 export default App;
->
+```
 
 
 
@@ -83,7 +83,7 @@ Close Confirmation: Prompts users with a confirmation dialog before closing the 
 
 
  ## Example
-
+```
  import React, { useRef, useState } from "react";
 
 function PodcastPlayer({ episode, onClose }) {
@@ -135,7 +135,7 @@ function PodcastPlayer({ episode, onClose }) {
       )}
     </div>
   );
-}
+} 
 
 export default PodcastPlayer;
 import React, { useRef, useState } from "react";
@@ -244,7 +244,7 @@ function PodcastPlayer({ episode, onClose }) {
       )}
     </div>
   );
-}
+} ```
 
 export default PodcastPlayer;
 
@@ -257,7 +257,7 @@ Favorite Toggling: Users can favorite/unfavorite shows.
 Sorting Options: Users can sort shows by title or date.
 
 
-## Example
+## Example```
 
 import React from "react";
 
@@ -278,7 +278,7 @@ function ShowList({ shows, onShowSelect, onFavoriteToggle, favorites }) {
 }
 
 export default ShowList;
-
+```
 
 ## Usage Examples
  -Selecting a Show:
